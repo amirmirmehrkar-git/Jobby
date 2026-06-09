@@ -1,0 +1,266 @@
+﻿<div ng-controller="userController as vm" ng-init="vm.initializeController()">
+    <div class="container">
+        <div class="card" id="ai-queue" aria-labelledby="ai-queue-title">
+
+            <div class="custom_table table-responsive">
+                <table ng-table="vm.tableParams" show-filter="showFilter"
+                       class="table table-striped responsive-table">
+                    <tbody>
+                        <tr style="text-align:center"
+                            ng-repeat="row in $data track by row.Id">
+                            <td data-title="'#'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{$index + 1}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'FullName'"
+                                filter="{FullName: 'text'}" sortable="'FullName'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{row.FullName}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'Email'"
+                                filter="{PhoneNumber: 'text'}" sortable="'PhoneNumber'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{row.PhoneNumber}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'Join Date'"
+                                filter="{CreateDate: 'ng-table/filters/datePicker.html'}" sortable="'PhoneNumber'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{row.CreateDate}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'Operation'">
+                                <span style="cursor:pointer;color:red">
+                                    <i title="Delete" ng-click="vm.getRow(row)"
+                                       data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                       class="icofont-ui-delete"></i>
+                                </span>
+                                <span style="cursor:pointer;color:cornflowerblue">
+                                    <i title="Edit" ng-click="vm.getRow(row)"
+                                       data-dismiss="modal" data-toggle="modal" data-target="#addUserModal"
+                                       class="icofont-pencil"></i>
+                                </span>
+                                <span style="cursor:pointer;color:forestgreen">
+                                    <i title="Enter" ng-click="vm.loginWithToken(row)"
+                                       class="icofont-arrow-right"></i>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+   
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    Are you sure you want to delete this item?
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="modal fade" id="deleteModal" tabindex="-1">
+        <div style="margin-top:150px" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">حذف کاربر</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form ng-submit="vm.delete()" novalidate>
+                        <div class="row g-3" style="margin-bottom:20px">
+                            <h5 class="modal-title">آیا مایلید این مورد حذف شود؟</h5>
+                        </div>
+                        <button style="float:left!important;margin-top:20px;margin-right:5px" type="submit"
+                                class="text-left btn btn-danger pl-5 pr-5 waves-effect">
+                            حذف
+                        </button>
+                        <button style="float:left!important;margin-top:20px;margin-right:5px"
+                                data-dismiss="modal" aria-label="Close" type="button"
+                                class="text-left btn btn-outline-primary pl-5 pr-5 waves-effect">
+                            بستن
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+</div>
+
+
+<!--<div ng-controller="userController as vm" ng-init="vm.initializeController()">
+    <div class="content-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">لیست کاربران</h4>
+
+                            <div class="d-flex">
+                                <button style="height: 40px" type="button" class="d-flex btn btn-primary"
+                                        ng-click="showFilter = !showFilter">
+                                    فیلتر
+                                </button>
+                                <button style="height: 40px;margin-right:10px" type="button"
+                                        class="d-flex btn btn-primary"
+                                        data-dismiss="modal" data-toggle="modal"
+                                        data-target="#addUserModal">
+                                    افزودن
+                                </button>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table ng-table="vm.tableParams" show-filter="showFilter"
+                                       class="table table-striped responsive-table">
+                                    <tbody>
+                                        <tr style="text-align:center"
+                                            ng-repeat="row in $data track by row.Id">
+                                            <td data-title="'ردیف'">
+                                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                                    <a>{{$index + 1}}</a>
+                                                </h6>
+                                            </td>
+                                            <td data-title="'نام کامل'"
+                                                filter="{FullName: 'text'}" sortable="'FullName'">
+                                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                                    <a>{{row.FullName}}</a>
+                                                </h6>
+                                            </td>
+                                            <td data-title="'شماره تماس'"
+                                                filter="{PhoneNumber: 'text'}" sortable="'PhoneNumber'">
+                                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                                    <a>{{row.PhoneNumber}}</a>
+                                                </h6>
+                                            </td>
+                                            <td data-title="'تاریخ عضویت'"
+                                                filter="{CreateDate: 'ng-table/filters/datePicker.html'}" sortable="'PhoneNumber'">
+                                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                                    <a>{{row.CreateDate | persianDate:'dddd, jD jMMMM jYY'}}</a>
+                                                </h6>
+                                            </td>
+                                            <td data-title="'عملیات'">
+                                                <span style="cursor:pointer;color:red">
+                                                    <i title="حذف" ng-click="vm.getRow(row)"
+                                                       data-dismiss="modal" data-toggle="modal" data-target="#deleteModal"
+                                                       class="icofont-ui-delete"></i>
+                                                </span>
+                                                <span style="cursor:pointer;color:cornflowerblue">
+                                                    <i title="ویرایش" ng-click="vm.getRow(row)"
+                                                       data-dismiss="modal" data-toggle="modal" data-target="#addUserModal"
+                                                       class="icofont-pencil"></i>
+                                                </span>
+                                                <span style="cursor:pointer;color:forestgreen">
+                                                    <i title="ورود به داشبورد" ng-click="vm.loginWithToken(row)"
+                                                       class="icofont-arrow-right"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div style="margin-top:150px" class="modal-dialog modal-lg">
+            <div class="modal-content modal-lg">
+                <div class="modal-header">
+                    <h5 class="modal-title">افزودن کاربر</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form name="formAddOrUpdateUser" ng-submit="vm.addOrUpdateUser()" novalidate>
+                        <div class="row g-3">
+                            <div class="col-xl-6"
+                                 ng-class="{'has-error':formAddOrUpdateUser.$submitted && formAddOrUpdateUser.FirstName.$error.required}">
+                                <label class="form-label">نام</label>
+                                <input ng-model="vm.item.FirstName" required name="FirstName"
+                                       type="text" class="form-control" placeholder="">
+                            </div>
+                            <div class="col-xl-6"
+                                 ng-class="{'has-error':formAddOrUpdateUser.$submitted && formAddOrUpdateUser.LastName.$error.required}">
+                                <label class="form-label">نام خانوادگی</label>
+                                <input ng-model="vm.item.LastName" required name="LastName"
+                                       type="text" class="form-control" placeholder="">
+                            </div>
+                            <div class="col-xl-6"
+                                 ng-class="{'has-error':formAddOrUpdateUser.$submitted && formAddOrUpdateUser.PhoneNumber.$error.required}">
+                                <label class="form-label">شماره تماس</label>
+                                <input ng-model="vm.item.PhoneNumber" required name="PhoneNumber"
+                                       type="text" class="form-control" placeholder="">
+                            </div>
+                            <div class="col-xl-6"
+                                 ng-class="{'has-error':formAddOrUpdateUser.$submitted && formAddOrUpdateUser.Password.$error.required}">
+                                <label class="form-label">رمز</label>
+                                <input ng-model="vm.item.Password" required name="Password"
+                                       type="text" class="form-control" placeholder="">
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <button style="float:left!important;margin-top:20px;margin-right:5px" type="submit"
+                                    class="text-left btn btn-success pl-5 pr-5 waves-effect">
+                                ذخیره
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div style="margin-top:150px" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">حذف کاربر</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form ng-submit="vm.delete()" novalidate>
+                        <div class="row g-3" style="margin-bottom:20px">
+                            <h5 class="modal-title">آیا مایلید این مورد حذف شود؟</h5>
+                        </div>
+                        <button style="float:left!important;margin-top:20px;margin-right:5px" type="submit"
+                                class="text-left btn btn-danger pl-5 pr-5 waves-effect">
+                            حذف
+                        </button>
+                        <button style="float:left!important;margin-top:20px;margin-right:5px"
+                                data-dismiss="modal" aria-label="Close" type="button"
+                                class="text-left btn btn-outline-primary pl-5 pr-5 waves-effect">
+                            بستن
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>-->

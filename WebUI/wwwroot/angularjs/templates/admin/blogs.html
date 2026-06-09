@@ -1,0 +1,243 @@
+﻿<div ng-controller="blogController as vm" ng-init="vm.initializeController()">
+    <div class="wrap">
+
+        <div class="card" style="margin-bottom: 0px !important; background-color: transparent !important; border: 1px solid lightpink">
+            <div class="row" style="margin-bottom:40px">
+                <div class="col-md-10">
+                    <h1 style="margin-top:20px;text-align:left!important;margin-bottom:0!important">
+                        <span style="font-size: 30px !important" class="sub-gradient">Blogs</span>
+                    </h1>
+                </div>
+                <div style="margin-top:25px" class="col-md-2">
+                    <a ng-click="vm.resetItem()" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#addOrUpdateModal"
+                       class="box3 btn primary" style="float: right;" href="#!/login">Add</a>
+                </div>
+            </div>
+
+            <div class="custom_table table-responsive">
+                <table style="font-size: 15px !important; font-weight: 200 !important; font-family: myFirstFont!important"
+                       ng-table="vm.tableParams" show-filter="showFilter"
+                       class="table table-striped responsive-table">
+                    <tbody>
+                        <tr style="text-align:center"
+                            ng-repeat="row in $data track by row.Id">
+                            <td data-title="'#'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{$index + 1}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'Title'"
+                                filter="{Title: 'text'}" sortable="'Title'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{row.Title}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'Operation'">
+                                <span style="cursor:pointer;color:red">
+                                    <i title="Delete" ng-click="vm.getRow(row)"
+                                       data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                       class="icofont-ui-delete"></i>
+                                </span>
+                                <span style="cursor:pointer;color:cornflowerblue">
+                                    <i title="Edit" ng-click="vm.getRow(row)"
+                                       data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#addOrUpdateModal"
+                                       class="icofont-pencil"></i>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="addOrUpdateModal" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content modal-lg">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="text-center justify-content-center align-items-center p-4 p-sm-5 position-relative rounded-3">
+                            <img style="margin-bottom:50px" 
+                                 ng-src="{{$root.domain}}/Content/Images/BlogImage/{{vm.item.FileName}}"
+                                      src="/images/emptyImage.png" class="blog_image" alt="">
+                            <div>
+                                <a id="btnFileUploadBlogCover" class="left btn btn-warning btn-ripple">
+                                    Upload Cover Image
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <input style="display:none" id="FileUploadBlogCover" type="file" accept="image/png, image/jpeg" ngf-select="UploadBlogCover($files)" />
+                            </div>
+                            <div style="width: 200px !important; margin-left: auto; margin-right: auto; margin-top: 20px;"
+                                 class="progress progress-percent-bg">
+                                <div id="dvProgress" ng-show="Progress >= 0" class="progress-bar progress-bar-striped bg-info">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Title</label>
+                            <input class="my_input_text" type="text" ng-model="vm.item.Title">
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Description</label>
+                            <textarea class="my_textarea my_input_text" style="height:150px;" ng-model="vm.item.Description"></textarea>
+                        </div>
+
+                        <div ng-repeat="row in vm.item.Details" class="mt-4">
+
+                            <img style="margin-bottom:10px!important" ng-if="row.Key == vm.inputType.Image"
+                                 ng-src="{{$root.domain}}/Content/Images/BlogImage/{{row.Value}}"
+                                 src="assets/images/element/gallery.svg"
+                                 class="blog_image" alt="">
+
+                            <p style="margin-bottom:10px!important" ng-if="row.Key == vm.inputType.Text" class="mb-0">{{row.Value}}</p>
+
+                            <div>
+                                <span style="cursor:pointer;color:red">
+                                    <i title="Delete" ng-click="vm.deleteDetail(row.Id)"
+                                       class="icofont-ui-delete"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 15px; text-align: center; " class="col-md-12">
+                            <a ng-click="vm.resetItem()"
+                               data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#addActivityModal"
+                               class="box3 btn primary" href="#!/login">
+                                <i class="ti ti-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.addOrUpdate()" type="button" class="box3 btn btn-danger" id="confirmDelete">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addActivityModal" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div style="margin-right:0px!important;margin-left:0px!important" class="row col-md-12">
+                            <button class="col-md-5 alert alert-warning" role="alert"
+                                    ng-click="vm.hideModal('AddActivity')" href=""
+                                    data-bs-toggle="modal" data-bs-target="#ImageAddOrUpdateDialog">
+                                <i class="fas fa-image fa-fw me-2"></i>
+                                Image
+                            </button>
+
+                            <button class="col-md-5 alert alert-info" role="alert"
+                                    ng-click="vm.hideModal('AddActivity')" href=""
+                                    data-bs-toggle="modal" data-bs-target="#TextAddOrUpdateDialog">
+                                <i class="bi bi-card-text fa-fw me-2"></i>
+                                Text
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ImageAddOrUpdateDialog" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="text-center justify-content-center align-items-center p-4 p-sm-5 position-relative rounded-3">
+                            <div>
+                                <a id="btnFileUpload_Image" class="left btn btn-warning btn-ripple">
+                                    Upload Image
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <input style="display:none" id="fileUpload_Image" type="file" accept="image/png, image/jpeg"
+                                       ngf-select="UploadImage($files)" />
+                            </div>
+                            <div style="width: 200px !important; margin-left: auto; margin-right: auto; margin-top: 20px;"
+                                 class="progress progress-percent-bg">
+                                <div id="dvProgress_Image" ng-show="Progress >= 0" class="progress-bar progress-bar-striped bg-info">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.addImageToDetail()" type="button" class="box3 btn btn-danger" id="confirmDelete">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="TextAddOrUpdateDialog" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Description</label>
+                            <textarea class="my_textarea my_input_text" style="height:150px;" ng-model="vm.Text"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.addTextToDetail()" type="button" class="box3 btn btn-danger" id="confirmDelete">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    Are you sure you want to delete this item?
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.delete()" type="button" class="box3 btn btn-danger" id="confirmDelete">Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

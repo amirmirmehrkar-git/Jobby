@@ -1,0 +1,160 @@
+﻿<div ng-controller="settingController as vm" ng-init="vm.initializeController()">
+
+    <div class="wrap">
+
+        <div class="d-flex">
+            <a style="margin-right:30px" class="brand">
+                <div class="logo-mark">
+                    <img src="/images/logo.png" style="height:40px">
+                </div>
+
+                <div class="logo-all">
+                    <div class="step-title" style="margin-bottom:5px;font-weight:800">Easy Actions</div>
+                    <div class="logoBottomTitle">Your AI career co-pilot</div>
+                </div>
+            </a>
+            <div style="text-align:center;margin-bottom:26px;margin-top:50px">
+                <h2 class="box4" style="margin-bottom:8px">
+                    <span style="font-size: 42px" class="gradient-text">
+                        Settings & Payments ⚙️
+                    </span>
+                </h2>
+                <p style="color: var(--muted); font-weight: 700; text-align: left; ">
+                    Tweak your profile and let's make your job hunt awesome!
+                </p>
+            </div>
+        </div>
+
+
+        <div style="background-color: transparent !important; border: 1px solid lightpink" class="card">
+
+            <input type="radio" id="tab-prompts" name="tabs" checked>
+            <input type="radio" id="tab-payment" name="tabs">
+
+            <div class="tabs" aria-hidden="false">
+                <label class="box3" for="tab-prompts">Prompts</label>
+                <label class="box3" for="tab-payment">Payments</label>
+            </div>
+
+            <div class="tab-contents">
+
+                <section id="prompts">
+
+                    <div style="text-align: center;">
+                        <div class="step-title" style="font-weight:700;font-size:16px">
+                            Prompts Information
+                        </div>
+                        <p class="small-note">You can see and update all prompts here</p>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Upload Resume Prompt</label>
+                        <textarea class="my_textarea my_input_text" style="height:200px;"
+                                  ng-model="vm.prompts.p1"></textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Generate Response Prompt</label>
+                        <textarea class="my_textarea my_input_text" style="height:400px;"
+                                  ng-model="vm.prompts.p2"></textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Apply Prompt</label>
+                        <textarea class="my_textarea my_input_text" style="height:300px;"
+                                  ng-model="vm.prompts.p3"></textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Get User Detail Prompt</label>
+                        <textarea class="my_textarea my_input_text" style="height:300px;"
+                                  ng-model="vm.prompts.p4"></textarea>
+                    </div>
+
+                </section>
+
+                <section id="payment">
+
+                    <div style="text-align: center;">
+                        <div class="step-title" style="font-weight:700;font-size:16px">
+                            Payment Settings
+                        </div>
+                        <p class="small-note">You can see and update all payments options here</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Price Of Generate Email Answer</label>
+                            <input class="my_input_text" type="text" ng-model="vm.payment.pay1">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Price Of Each Apply</label>
+                            <input class="my_input_text" type="text" ng-model="vm.payment.pay2">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Price Of Create Resume</label>
+                            <input class="my_input_text" type="text" ng-model="vm.payment.pay3">
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addOrUpdateModal" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div style="margin-top:20px">
+                            <input type="file" accept="application/pdf"
+                                   ngf-select="Upload($files)" />
+                        </div>
+                        <div style="margin-top:20px">
+                            <div style="width: 100%!important;" class="myprogress progress-percent-bg">
+                                <div style="width:auto!important;padding:10px!important" id="dvProgress1" ng-show="Progress >= 0"
+                                     class="progress-bar progress-bar-striped bg-info">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.addOrUpdateResume()" type="button" class="box3 btn btn-danger" id="confirmDelete">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    Are you sure you want to delete this item?
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.delete()" type="button" class="box3 btn btn-danger" id="confirmDelete">Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

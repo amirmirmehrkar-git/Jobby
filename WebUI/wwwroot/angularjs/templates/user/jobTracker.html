@@ -1,0 +1,499 @@
+﻿<div ng-controller="suggestController as vm" ng-init="vm.initializeController()">
+
+    <div class="wrap">
+
+        <div class="d-flex">
+            <a style="margin-right:30px" class="brand">
+                <div class="logo-mark">
+                    <img src="/images/logo.png" style="height:40px">
+                </div>
+
+                <div class="logo-all">
+                    <div class="step-title" style="margin-bottom:5px;font-weight:800">Easy Actions</div>
+                    <div class="logoBottomTitle">Your AI career co-pilot</div>
+                </div>
+            </a>
+            <div style="text-align:center;margin-bottom:26px;margin-top:50px">
+                <h2 class="box4" style="margin-bottom:8px">
+                    <span style="font-size: 42px" class="gradient-text">
+                        Job Application Tracker 📊
+                    </span>
+                </h2>
+                <p style="color:var(--muted);font-weight:700">
+                    Track your AI-powered job applications across all platforms in real-time
+                </p>
+            </div>
+        </div>
+      
+
+        <div style="margin-top:0px!important" class="row">
+            <div class="col-md-3" style="padding: 0px 30px 30px 30px">
+                <div class="card2 blue row">
+                    <div class="col-md-8">
+                        <div class="title2">Total</div>
+                        <div class="value">{{vm.TotalApplications}}</div>
+                    </div>
+                    <div class="icon col-md-4" style="background: linear-gradient(135deg,#6f45ff,#9b5bff);">
+                        <i class="ti ti-briefcase"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3" style="padding: 0px 30px 30px 30px">
+                <div class="card2 purple row">
+                    <div class="col-md-8">
+                        <div class="title2">Rejects</div>
+                        <div class="value">{{vm.Rejects}}</div>
+                    </div>
+                    <div class="icon col-md-4" style="background: linear-gradient(135deg,#a144ff,#c067ff);">
+                        <i class="ti ti-users"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3" style="padding: 0px 30px 30px 30px">
+                <div class="card2 pink row">
+                    <div class="col-md-8">
+                        <div class="title2">Passed</div>
+                        <div class="value">{{vm.Passed}}</div>
+                    </div>
+                    <div class="icon col-md-4" style="background: linear-gradient(135deg,#ff3e7f,#ff6fa1);">
+                        <i class="ti ti-star"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3" style="padding: 0px 30px 30px 30px">
+                <div class="card2 row">
+                    <div class="col-md-8">
+                        <div class="title2">Interviews</div>
+                        <div class="value">{{vm.Interviews}}</div>
+                    </div>
+                    <div class="icon col-md-4" style="background: linear-gradient(135deg,#6f45ff,#9b5bff);">
+                        <i class="ti ti-timeline"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom:20px" class="action-bar">
+            <div class="action-left">
+                <div ng-click="showFilter = !showFilter" class="box3 btn outline">Filter</div>
+            </div>
+            <div class="action-right">
+                <div class="box3 btn primary"
+                     data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#addJobModal">
+                    <i class="ti ti-plus"></i>
+                    Add Job
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-left:20px;margin-right:20px;margin-bottom:20px" ng-if="showFilter" class="row">
+            <div class="field col-md-3">
+                <label style="float:left!important">Title</label>
+                <input ng-model="vm.search.Title" type="text">
+            </div>
+            <div class="field col-md-3">
+                <label style="float:left!important">Company</label>
+                <input ng-model="vm.search.Company" type="text">
+            </div>
+            <div class="field col-md-3">
+                <label style="float:left!important">Date</label>
+                <input ng-model="vm.search.Date" type="date">
+            </div>
+            <div class="field col-md-3">
+                <label style="float:left!important">Type</label>
+                <select class="form-select form-select-lg" data-allow-clear="true"
+                        name="SuggestType" ng-model="vm.search.SuggestType"
+                        ng-init="vm.search.SuggestType || vm.jobTrackerSearchs[0].id"
+                        ng-options="option for option in vm.jobTrackerSearchs">
+                </select>
+            </div>
+
+            <div class="d-flex">
+                <div class="field">
+                    <span style="font-size:14px;">LinkedIn</span>
+                    <input style="width:15px" id="chkLinkedIn" type="checkbox" checked />
+                </div>
+                <div style="margin-left:15px" class="field">
+                    <span style="font-size:14px;">Xing</span>
+                    <input style="width:15px" id="chkXing" type="checkbox" checked />
+                </div>
+                <div style="margin-left:15px" class="field">
+                    <span style="font-size:14px;">Stepstone</span>
+                    <input style="width:15px" id="chkStepstone" type="checkbox" checked />
+                </div>
+            </div>
+
+            <div style="margin-top:20px">
+                <button ng-click="vm.searchSentSuggestByUserId()" type="button"
+                        class="box3 btn btn-danger" id="confirmDelete">
+                    Search
+                </button>
+            </div>
+        </div>
+
+        <div class="card" id="ai-queue" aria-labelledby="ai-queue-title">
+
+            <input type="radio" id="tab-profile" name="tabs" checked>
+            <input type="radio" id="tab-ready" name="tabs">
+            <input type="radio" id="tab-waitingJobs" name="tabs">
+            <input type="radio" id="tab-notifs" name="tabs">
+
+            <div class="tabs" aria-hidden="false">
+                <label class="box3" for="tab-profile">Jobs to Review</label>
+                <label class="box3" for="tab-ready">Ready To Send</label>
+                <label class="box3" for="tab-waitingJobs">AI Applying</label>
+                <label class="box3" for="tab-notifs">Applied</label>
+            </div>
+
+            <div class="tab-contents">
+
+                <section id="profile">
+                    <div class="kanban-wrap">
+                        <div style="width:100%!important" class="row">
+
+                            <div ng-if="vm.newJobs" style="margin-bottom:20px" class="action-bar">
+                                <div ng-click="vm.selectAllJobs()" class="action-left">
+                                    <div class="box3 btn outline">{{vm.selectText}}</div>
+                                </div>
+
+                                <button ng-click="vm.addToReady()" type="button"
+                                        class="box3 btn btn-danger" id="confirmDelete">
+                                    Sent To Ready
+                                </button>
+                            </div>
+
+
+                            <div ng-repeat="row in vm.newJobs" style="margin:10px" class="box2 column">
+                                <div class="job" role="article">
+                                    <div class="details">
+                                        <span style="height:40px" ng-click="vm.selectJob(row)">{{row.Title}}</span>
+                                        <div>
+                                            <i style="font-size:13px" class="ti ti-home-2"></i>
+                                            {{row.Company}}
+                                        </div>
+
+                                        <div style="margin-top:10px">
+                                            <i style="font-size:13px;color:forestgreen" class="ti ti-current-location"></i>
+                                            {{row.Location}}
+                                        </div>
+                                        <div style="margin-top:10px">
+                                            <i ng-if="row.JobType == 0" style="font-size:13px;color:dodgerblue"
+                                               class="ti ti-brand-linkedin"></i>
+                                            <i ng-if="row.JobType == 1" style="font-size:13px;color:forestgreen"
+                                               class="ti ti-brand-xing"></i>
+                                            <i ng-if="row.JobType == 2" style="font-size:13px;color:orangered"
+                                               class="ti ti-brand-steam"></i>
+
+                                            {{vm.jobTypes[row.JobType]}}
+                                        </div>
+                                    </div>
+                                    <div class="job-footer">
+                                        <div class="badges">
+                                            <input type="checkbox" ng-model="row.IsSelected" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="ready">
+                    <div class="kanban-wrap">
+                        <div style="width:100%!important" class="row">
+
+                            <div ng-if="vm.readyToSend" style="margin-bottom:20px" class="action-bar">
+                            </div>
+
+                            <div ng-repeat="row in vm.readyToSend" style="margin:10px" class="box2 column">
+                                <div class="job" role="article">
+                                    <div class="details">
+                                        <span style="height:40px" ng-click="vm.selectJob(row)">{{row.Title}}</span>
+                                        <div>
+                                            <i style="font-size:13px" class="ti ti-home-2"></i>
+                                            {{row.Company}}
+                                        </div>
+
+                                        <div style="margin-top:10px">
+                                            <i style="font-size:13px;color:forestgreen" class="ti ti-current-location"></i>
+                                            {{row.Location}}
+                                        </div>
+                                        <div style="margin-top:10px">
+                                            <i ng-if="row.JobType == 0" style="font-size:13px;color:dodgerblue"
+                                               class="ti ti-brand-linkedin"></i>
+                                            <i ng-if="row.JobType == 1" style="font-size:13px;color:forestgreen"
+                                               class="ti ti-brand-xing"></i>
+                                            <i ng-if="row.JobType == 2" style="font-size:13px;color:orangered"
+                                               class="ti ti-brand-steam"></i>
+                                            <i ng-if="row.JobType == 4" style="font-size:13px;color:dimgray"
+                                               class="ti ti-link"></i>
+
+                                            {{vm.jobTypes[row.JobType]}}
+                                        </div>
+                                    </div>
+                                    <div class="job-footer">
+                                        <div class="badges">
+                                            <button data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#coverLetterModal"
+                                                    ng-click="vm.getRow(row)" type="button"
+                                                    class="box3 btn btn-danger" id="confirmDelete">
+                                                View
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="waitingJobs">
+                    <div class="kanban-wrap">
+                        <div style="width:100%!important" class="row">
+
+                            <div ng-repeat="row in vm.waitingJobs" style="margin:10px" class="box2 column">
+                                <div class="job" role="article">
+                                    <div class="details">
+                                        <span style="height:40px">{{row.Title}}</span>
+                                        <div>
+                                            <i style="font-size:13px" class="ti ti-home-2"></i>
+                                            {{row.Company}}
+                                        </div>
+                                        <div style="margin-top:10px">
+                                            <i style="font-size:13px;color:forestgreen" class="ti ti-file-text"></i>
+                                            {{row.Location}}
+                                        </div>
+                                        <div>
+                                            <i style="font-size:13px;color:dodgerblue" class="ti ti-calendar"></i>
+                                            {{row.CreateDate}}
+                                        </div>
+                                        <div style="margin-top:10px">
+                                            <i ng-if="row.JobType == 0" style="font-size:13px;color:dodgerblue"
+                                               class="ti ti-brand-linkedin"></i>
+                                            <i ng-if="row.JobType == 1" style="font-size:13px;color:forestgreen"
+                                               class="ti ti-brand-xing"></i>
+                                            <i ng-if="row.JobType == 2" style="font-size:13px;color:orangered"
+                                               class="ti ti-brand-steam"></i>
+
+                                            {{vm.jobTypes[row.JobType]}}
+                                        </div>
+                                    </div>
+                                    <div class="job-footer">
+                                        <div class="badges">
+                                            <button data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#seeQuestionsModal"
+                                                    ng-click="vm.getRow(row)" type="button"
+                                                    class="box3 btn btn-danger" id="confirmDelete">
+                                                See Questions
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="notifications">
+                    <div class="kanban-wrap">
+                        <div style="width:100%!important" class="row">
+
+                            <div ng-repeat="row in vm.suggests" style="margin:10px" class="box2 column">
+                                <div class="job" role="article">
+                                    <div class="details">
+                                        <span style="height:40px">{{row.Title}}</span>
+                                        <div>
+                                            <i style="font-size:13px" class="ti ti-home-2"></i>
+                                            {{row.Company}}
+                                        </div>
+                                        <div style="margin-top:10px">
+                                            <i style="font-size:13px;color:forestgreen" class="ti ti-file-text"></i>
+                                            {{row.Location}}
+                                        </div>
+                                        <div>
+                                            <i style="font-size:13px;color:dodgerblue" class="ti ti-calendar"></i>
+                                            {{row.CreateDate}}
+                                        </div>
+                                        <div style="margin-top:10px" class="row">
+                                            <div class="col-md-6">
+                                                <i ng-if="row.JobType == 0" style="font-size:13px;color:dodgerblue"
+                                                   class="ti ti-brand-linkedin"></i>
+                                                <i ng-if="row.JobType == 1" style="font-size:13px;color:forestgreen"
+                                                   class="ti ti-brand-xing"></i>
+                                                <i ng-if="row.JobType == 2" style="font-size:13px;color:orangered"
+                                                   class="ti ti-brand-steam"></i>
+                                                <i ng-if="row.JobType == 4" style="font-size:13px;color:dimgray"
+                                                   class="ti ti-link"></i>
+
+                                                {{vm.jobTypes[row.JobType]}}
+                                            </div>
+                                            <div class="col-md-6">
+                                                <i ng-if="row.SuggestType == 0" style="font-size:13px;color:dodgerblue"
+                                                   class="ti ti-send"></i>
+                                                <i ng-if="row.SuggestType == 2" style="font-size:13px;color:orangered"
+                                                   class="ti ti-ban"></i>
+                                                <i ng-if="row.SuggestType == 3" style="font-size:13px;color:forestgreen"
+                                                   class="ti ti-checkbox"></i>
+                                                <i ng-if="row.SuggestType == 4" style="font-size:13px;color:orange"
+                                                   class="ti ti-calendar-event"></i>
+
+                                                {{vm.suggestTypes[row.SuggestType]}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="job-footer">
+                                        <div class="badges">
+                                            <button data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#addResponseModal"
+                                                    ng-click="vm.getRow(row)" type="button"
+                                                    class="box3 btn btn-danger" id="confirmDelete">
+                                                Responses
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addResponseModal" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content modal-xl">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div ng-if="vm.Responses" ng-repeat="message in vm.Responses" style="cursor: pointer;">
+                            <div style="margin-bottom:10px;padding:15px" ng-class="{'chatTo':message.ResponseText}">
+                                <label style="min-height:50px;user-select:none!important;text-align:right!important">
+                                    {{message.ResponseText}}
+                                </label>
+
+                                <label style="float:left;background-color:transparent;">{{message.CreateDate}}</label>
+                            </div>
+
+                            <div ng-if="message.AiResult" style="margin-bottom: 10px;padding: 15px" ng-class="{'chatFrom':message.AiResult}">
+                                <label style="min-height: 50px; user-select: none !important; text-align: left !important">
+                                    {{message.AiResult}}
+                                </label>
+
+                                <label style="float:left;background-color:transparent;">{{message.CreateDate}}</label>
+                            </div>
+                        </div>
+                        <hr ng-if="vm.Responses" style="margin-top:40px!important" />
+                        <div class="field col-md-12">
+                            <label style="float:left!important">Response Text</label>
+                            <textarea class="my_textarea" ng-model="vm.item.ResponseText"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.addResponse()" type="button" class="box3 btn btn-danger" id="confirmDelete">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="seeQuestionsModal" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div ng-repeat="question in vm.Questions" class="field col-md-12">
+                            <label style="float:left!important">{{question.Title}}</label>
+                            <input ng-model="question.Answer" type="text">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.updateQuestions()" type="button" class="box3 btn btn-danger" id="confirmDelete">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="coverLetterModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-lg">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div style="text-align:left!important;text-justify:inter-word!important" class="modal-body text-center">
+                    <pre>
+                    {{vm.CoverLetter}}
+                </pre>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.sendApplication()" type="button"
+                            class="box3 btn btn-danger" id="confirmDelete">
+                        Send
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addJobModal" tabindex="-1" aria-labelledby="addJobModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content modal-lg">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="field col-md-4">
+                            <label style="float:left!important">Title</label>
+                            <input ng-model="vm.newJob.Title" type="text">
+                        </div>
+                        <div class="field col-md-4">
+                            <label style="float:left!important">Company</label>
+                            <input ng-model="vm.newJob.Company" type="text">
+                        </div>
+                        <div class="field col-md-4">
+                            <label style="float:left!important">Location</label>
+                            <input ng-model="vm.newJob.Location" type="text">
+                        </div>
+                        <div class="field col-md-12">
+                            <label style="float:left!important">Link</label>
+                            <input ng-model="vm.newJob.Link" type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.addNewJobToReady()" type="button" class="box3 btn btn-danger" id="confirmDelete">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

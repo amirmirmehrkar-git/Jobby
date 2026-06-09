@@ -1,0 +1,85 @@
+﻿<div ng-controller="transactionController as vm" ng-init="vm.initializeController()">
+    <div class="container">
+        <div class="card" id="ai-queue" aria-labelledby="ai-queue-title">
+
+            <div class="row" style="margin-bottom:40px">
+                <div class="col-md-10">
+                    <h1 style="margin-top:20px;text-align:left!important;margin-bottom:0!important">
+                        <span style="font-size: 30px !important" class="sub-gradient">Transactions</span>
+                    </h1>
+                </div>
+                <div style="margin-top:25px" class="col-md-2">
+                    <a ng-click="vm.resetItem()" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#addOrUpdateModal"
+                       class="box3 btn primary" style="float: right;" href="#!/login">Wallet recharge</a>
+                </div>
+            </div>
+
+            <div class="custom_table table-responsive">
+                <table style="font-size: 15px !important; font-weight: 200 !important; font-family: myFirstFont!important"
+                       ng-table="vm.tableParams" show-filter="showFilter"
+                       class="table table-striped responsive-table">
+                    <tbody>
+                        <tr style="text-align:center"
+                            ng-repeat="row in $data track by row.Id">
+                            <td data-title="'#'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{$index + 1}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'Amount'"
+                                filter="{Project: 'text'}" sortable="'Project'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{row.Amount}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'State'"
+                                filter="{Company: 'text'}" sortable="'Company'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{vm.paymentStates[row.State].title}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'CreateDate'"
+                                filter="{Role: 'text'}" sortable="'Role'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{row.CreateDate}}</a>
+                                </h6>
+                            </td>
+                            <td data-title="'PayDate'"
+                                filter="{Activity: 'text'}" sortable="'Activity'">
+                                <h6 class="table-responsive-title mb-0 fw-normal">
+                                    <a>{{row.PayDate}}</a>
+                                </h6>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="addOrUpdateModal" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="field col-md-12">
+                            <label style="float:left!important">Amount</label>
+                            <input ng-model="vm.item.Amount" type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.addOrUpdate()" type="button" class="box3 btn btn-danger" id="confirmDelete">Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

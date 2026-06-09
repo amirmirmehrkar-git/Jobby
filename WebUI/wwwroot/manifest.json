@@ -1,0 +1,33 @@
+{
+  "name": "اوسابیا",
+  "short_name": "اوسابیا",
+  "description": "سامانه کاریابی اوسابیا",
+  "icons": [
+    {
+      "sizes": "144x144",
+      "type": "image/png",
+      "src": "/images/logoMaher.png"
+    },
+    {
+      "sizes": "168x168",
+      "type": "image/png",
+      "src": "/images/logoMaher.png"
+    },
+    {
+      "sizes": "192x192",
+      "type": "image/png",
+      "src": "/images/logoMaher.png"
+    },
+    {
+      "sizes": "512x512",
+      "type": "image/png",
+      "src": "/images/logoMaher.png"
+    }
+  ],
+
+  "display": "standalone",
+  //"theme_color": "#2dab66",
+  //"orientation": "portrait",
+  //"background_color": "#2dab66",
+  "start_url": "/"
+}

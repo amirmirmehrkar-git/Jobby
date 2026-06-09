@@ -1,0 +1,164 @@
+﻿<div ng-controller="emailController as vm" ng-init="vm.initializeController()">
+
+    <div class="wrap">
+
+        <div class="d-flex">
+            <a style="margin-right:30px" class="brand">
+                <div class="logo-mark">
+                    <img src="/images/logo.png" style="height:40px">
+                </div>
+
+                <div class="logo-all">
+                    <div class="step-title" style="margin-bottom:5px;font-weight:800">Easy Actions</div>
+                    <div class="logoBottomTitle">Your AI career co-pilot</div>
+                </div>
+            </a>
+            <div style="text-align:center;margin-bottom:26px;margin-top:50px">
+                <h2 class="box4" style="margin-bottom:8px">
+                    <span style="font-size: 42px" class="gradient-text">
+                        Email Center ✉️
+                    </span>
+                </h2>
+                <p style="color:var(--muted);font-weight:700">
+                    Your AI pal's managing all your job emails!
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3" style="padding: 0px 30px 30px 30px">
+                <div class="card2 blue row">
+                    <div class="col-md-8">
+                        <div class="title2">Total Emails</div>
+                        <div class="value">{{vm.TotalEmails}}</div>
+                    </div>
+                    <div class="icon col-md-4" style="background: linear-gradient(135deg,#6f45ff,#9b5bff);">
+                        <i class="ti ti-mail"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3" style="padding: 0px 30px 30px 30px">
+                <div class="card2 purple row">
+                    <div class="col-md-8">
+                        <div class="title2">Unread</div>
+                        <div class="value">{{vm.Unreads}}</div>
+                    </div>
+                    <div class="icon col-md-4" style="background: linear-gradient(135deg,#a144ff,#c067ff);">
+                        <i class="ti ti-eye"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3" style="padding: 0px 30px 30px 30px">
+                <div class="card2 pink row">
+                    <div class="col-md-8">
+                        <div class="title2">AI Count</div>
+                        <div class="value">{{vm.AICount}}</div>
+                    </div>
+                    <div class="icon col-md-4" style="background: linear-gradient(135deg,#ff3e7f,#ff6fa1);">
+                        <i class="ti ti-brand-days-counter"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3" style="padding: 0px 30px 30px 30px">
+                <div class="card2 pink row">
+                    <div class="col-md-8">
+                        <div class="title2">Today Emails</div>
+                        <div class="value">{{vm.AICount}}</div>
+                    </div>
+                    <div class="icon col-md-4" style="background: linear-gradient(135deg,#ff3e7f,#ff6fa1);">
+                        <i class="ti ti-brand-days-counter"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="align-items:start" id="panelChooseResume" class="row">
+            <div class="col-md-5">
+                <div class="card" style="margin-bottom: 0px !important;flex-direction: row !important; background-color: transparent !important; border: 1px solid lightpink">
+                    <div style="width: 100%;">
+                        <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                            <div>
+                                <div class="step-title" style="font-weight:700;font-size:16px">
+                                    <i style="color:purple" class="robot-circle3 ti ti-mail"></i>
+                                    Inbox
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin: 10px 10px 10px 0px; text-align: left; ">
+                            <div ng-click="vm.getRow(row)" class="box3"
+                                 style="margin-bottom: 10px;cursor:pointer;border:1px solid lightgray;border-radius:15px;padding:15px"
+                                 ng-repeat="row in vm.emails">
+                                <div class="d-flex">
+                                    <div class="step active">
+                                        <div class="circle">
+                                            <i class="ti ti-user"></i>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 10px; margin-left: 10px;"
+                                         class="label font_weight_500">{{row.Sender}}</div>
+                                </div>
+
+                                <div style="margin-left:55px;">
+                                    <div>
+                                        {{row.Messeage | first40Chars}}
+                                    </div>
+                                    <hr />
+                                    <div style="font-size:12px;color:purple">
+                                        {{row.SuggestTitle}}
+                                    </div>
+                                    <div style="font-size:11px">
+                                        {{row.CreateDate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-7">
+                <div class="card" style="margin-bottom:0px!important;text-align:center;background-color: transparent !important; border: 1px solid lightpink">
+
+                    <div style="display:flex;align-items:center;margin-bottom:12px">
+                        <div>
+                            <div style="font-weight:700;font-size:16px">
+                                {{vm.email.Sender}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="!vm.email.Sender" class="font_weight_500"
+                         style="color: var(--muted); font-weight: 700; font-size: 13px; text-align: center; height: 100% !important; margin-top: 50px; margin-bottom: 50px">
+                        Please select email to see it!
+                    </div>
+
+                    <div ng-if="vm.email.Sender" style="text-align:left" class="upload-area" aria-hidden="true">
+                        <div class="label font_weight_500">
+                            {{vm.email.SuggestTitle}}
+                        </div>
+                        <hr />
+                        <div style="font-size:12px">
+                            {{vm.email.Messeage}}
+                        </div>
+
+                        <div style="margin-top:80px" class="col-md-12">
+                            <div style="font-size:12px">
+                                Your Answer
+                            </div>
+                            <textarea style="height:150px;" class="my_textarea" ng-model="vm.email.Answer"></textarea>
+                        </div>
+                        <div>
+                            <a ng-click="vm.generateAnswerForEmail()" class="box3 btn ghost">Generate Answer</a>
+                            <button ng-disabled="!vm.email.Answer" class="box3 btn primary">Send</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

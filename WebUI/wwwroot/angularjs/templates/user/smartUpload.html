@@ -1,0 +1,359 @@
+﻿<div ng-controller="suggestController as vm" ng-init="vm.initializeController()">
+
+    <div class="wrap">
+
+        <div ng-if="!vm.panelAfterFindJob" style="text-align:center;margin-bottom:26px;margin-top:50px">
+            <h2 class="box4" style="margin-bottom:8px">
+                <span style="font-size: 42px" class="gradient-text">
+                    Smart Resume Upload & AI Analysis 🚀
+                </span>
+            </h2>
+            <p style="color:var(--muted);font-weight:700">
+                Upload your resume, get AI-powered analysis, and find matching jobs instantly
+            </p>
+        </div>
+
+        <div id="panelChooseResume" class="row">
+            <div class="col-md-7">
+                <div class="card" style="margin-bottom: 0px !important;flex-direction: row !important; background-color: transparent !important; border: 1px solid lightpink">
+                    <div style="width: 100%;">
+                        <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                            <div>
+                                <div class="step-title" style="font-weight:700;font-size:16px">
+                                    <i style="color:purple" class="robot-circle3 ti ti-upload"></i>
+                                    Upload Resume
+                                </div>
+                                <div class="font_weight_500" style="color:var(--muted);font-weight:700;font-size:13px;margin-top:10px">
+                                    Drag & drop or click to upload your resume (PDF, DOC, DOCX)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="upload-area" aria-hidden="true">
+                            <div class="robot-circle3 upload-ico">
+                                <i class="ti ti-upload"></i>
+                            </div>
+                            <p class="desc font_weight_500">Supports PDF, files up to 10MB</p>
+                            <div style="height:12px"></div>
+
+                            <input type="file" accept=".pdf" file-auto-upload="vm.resumeAnalyze1(file)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-5">
+                <div class="card" style="margin-bottom:0px!important;text-align:center;background-color: transparent !important; border: 1px solid lightpink">
+
+                    <div style="height: 208px !important; width: 208px !important " class="robot-circle robot" aria-hidden="true">
+                        <img src="/images/logo.png" style="height:208px">
+                    </div>
+
+                    <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                        <div>
+                            <div class="step-title" style="font-weight:700;font-size:16px">
+                                Hi! I'm Jobby! 🤖
+                            </div>
+                            <div class="font_weight_500" style="color:var(--muted);font-weight:700;font-size:13px;margin-top:10px">
+                                I'll analyze your resume and find you the perfect jobs! Let's do this! 🚀
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="panelAnalyze" style="display: none;" class="col-md-12">
+            <div class="card" style="background-color: transparent !important; border: 1px solid lightpink">
+
+                <div style="height: 70px !important; width: 70px !important " class="robot-circle robot" aria-hidden="true">
+                    <img src="/images/logo.png" style="height:70px">
+                </div>
+
+                <div style="text-align:center;align-items:center;margin-bottom:25px;margin-top:15px">
+                    <div>
+                        <div class="step-title" style="font-weight:700;font-size:27px">
+                            Hey! What do you want me to do? 🤔
+                        </div>
+                        <div class="font_weight_500" style="color:var(--muted);font-weight:700;font-size:13px;margin-top:10px">
+                            Do you want me to analyze your resume for you or if you don't want to, I can connect you to our human consultants?
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-right:70px;margin-left:70px" class="row">
+                    <div style="padding:20px" class="col-md-6">
+                        <div style="height: 320px;background-color: transparent; border: 1px solid lightpink" class="card3">
+                            <div style="background: linear-gradient(135deg, #8f4fff, #b367ff)!important;color:white!important" class="icon3 purple">
+                                <i style="font-size:35px!important" class="ti ti-stars"></i>
+                            </div>
+                            <div class="title">AI Analysis 🤖</div>
+                            <div class="desc">Let me analyze your resume super fast with AI magic! I'll find the best jobs for you! ✨</div>
+
+                            <a ng-click="vm.resumeAnalyze2()" style="text-decoration:none" class="btn2">Yes, analyze it! 🚀</a>
+                        </div>
+                    </div>
+
+                    <div style="padding:20px" class="col-md-6">
+                        <div style="height:320px;background-color: transparent; border: 1px solid lightpink" class="card3">
+                            <div class="icon3 pink">
+                                <i style="font-size:35px!important" class="ti ti-users"></i>
+                            </div>
+                            <div class="title">Human Consultants 👥</div>
+                            <div class="desc">Talk to real people! Our expert consultants will help you personally! 💼</div>
+
+                            <button class="btn2">Talk to humans! 😊</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="align-items:start" ng-if="vm.panelSkills" class="row">
+            <div class="col-md-5">
+                <div class="card" style="margin-bottom: 0px !important;background-color: transparent !important; border: 1px solid lightpink">
+                    <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                        <div>
+                            <div class="step-title" style="font-weight:700;font-size:16px">
+                                Extracted Skills
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display:table-row!important" class="d-flex">
+                            <span style="margin-right:5px;margin-bottom:5px;cursor:text!important"
+                                  ng-repeat="row in vm.result.Skills" class="btn ghost">{{row.Title}}</span>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                        <div>
+                            <div class="step-title" style="font-weight:700;font-size:16px">
+                                Extracted Positions
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display:table-row!important" class="d-flex">
+                            <span style="margin-right:5px;margin-bottom:5px;cursor:text!important"
+                                  ng-repeat="row in vm.result.JobTitles" class="btn ghost">{{row}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="card" style="margin-bottom:0px!important;text-align:center;background-color: transparent !important; border: 1px solid lightpink">
+                    <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                        <div>
+                            <div class="step-title" style="font-weight:700;font-size:16px">
+                                AI Analyze Result
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin: 0px 10px 10px 10px; text-align: left; ">
+                        <div style="margin-bottom: 10px;" ng-repeat="row in vm.result.ResumeAnalysis">
+                            <div class="d-flex">
+                                <div class="step active">
+                                    <div style="font-size: 13px;" class="circle">
+                                        {{row.Score * 10}}%
+                                    </div>
+                                </div>
+                                <div style="margin-top: 10px; margin-left: 10px; " class="label font_weight_500">{{row.Dimension}}</div>
+                            </div>
+                            <div style="margin-left: 55px; color: var(--muted); font-size: 14px; ">
+                                {{row.Comments}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="vm.result.ResumeAnalysis" style="text-align: left !important;margin-top:20px"
+                         class="label font_weight_500">Summary:</div>
+                    <div class="font_weight_500" style="color:var(--muted);font-weight:700;font-size:13px;text-align:left!important">
+                        {{vm.result.Summary}}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="!vm.panelAfterFindJob && vm.result.ResumeAnalysis" style="text-align: center" class="actions">
+            <a ng-click="vm.getNewJobsAndGenerateCoverLetter()" style="height:40px!important" class="box3 btn primary">
+                <i class="ti ti-settings-automation"></i>
+                Find Matching Jobs
+            </a>
+        </div>
+
+        <div ng-if="vm.newJobs" class="col-md-12">
+            <div style="text-align:center;margin-bottom:26px;margin-top:50px">
+                <h2 class="box4" style="margin-bottom:8px">
+                    <span style="font-size: 42px" class="gradient-text">
+                        Matching Jobs Found! 🎉
+                    </span>
+                </h2>
+                <p style="color:var(--muted);font-weight:700">
+                    We found 10 awesome jobs that match your profile! Pick the ones you like! 💼
+                </p>
+            </div>
+
+            <div style="min-height:233px" class="row">
+
+                <div class="Kanban_container">
+
+                    <div class="Kanban_card">
+                        <div class="Kanban_card-header linkedin">
+                            LinkedIn
+                            <div class="jobs-badge">{{vm.newJobsLinkedIn.length}} jobs</div>
+                        </div>
+                        <div class="card-body">
+
+                            <div style="gap:0px!important" class="row Kanban_select-all">
+                                <input class="col-md-2" type="checkbox">
+                                <label class="col-md-10" style="font-size:16px;color:black!important;cursor:pointer;margin-bottom:0px!important" ng-click="vm.selectJob(row)">
+                                    Select All
+                                </label>
+                            </div>
+
+                            <div ng-repeat="row in vm.newJobsLinkedIn" class="item">
+                                <div style="gap:0px!important" class="row item-top">
+                                    <input class="col-md-2" type="checkbox">
+                                    <label class="col-md-10" style="color:black!important;cursor:pointer;margin-bottom:0px!important" ng-click="vm.selectJob(row)">
+                                        {{row.Title}}
+                                    </label>
+                                </div>
+                                <small>{{row.Company}}</small>
+                                <div class="row">
+                                    <span class="salary">{{row.Location}}</span>
+                                </div>
+
+                                <div style="margin-top:10px" class="badges">
+                                    <button style="height: 30px; font-size: 12px !important;" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#coverLetterModal"
+                                            ng-click="vm.getRow(row)" type="button"
+                                            class="box3 btn btn-danger" id="confirmDelete">
+                                        View CoverLetter
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="Kanban_card">
+                        <div class="Kanban_card-header stepstone">
+                            StepStone
+                            <div class="jobs-badge">{{vm.newJobsStepStone.length}} jobs</div>
+                        </div>
+                        <div class="card-body">
+
+                            <div style="gap:0px!important" class="row Kanban_select-all">
+                                <input class="col-md-2" type="checkbox">
+                                <label class="col-md-10" style="font-size:16px;color:black!important;cursor:pointer;margin-bottom:0px!important" ng-click="vm.selectJob(row)">
+                                    Select All
+                                </label>
+                            </div>
+
+                            <div ng-click="vm.selectJob(row)" ng-repeat="row in vm.newJobsStepStone" class="item">
+                                <div style="gap:0px!important" class="row item-top">
+                                    <input class="col-md-2" type="checkbox">
+                                    <label class="col-md-10" style="color:black!important;cursor:pointer;margin-bottom:0px!important" ng-click="vm.selectJob(row)">
+                                        {{row.Title}}
+                                    </label>
+                                </div>
+                                <small>{{row.Company}}</small>
+                                <div class="row">
+                                    <span class="salary">{{row.Location}}</span>
+                                </div>
+
+                                <div style="margin-top:10px" class="badges">
+                                    <button style="height: 30px; font-size: 12px !important;" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#coverLetterModal"
+                                            ng-click="vm.getRow(row)" type="button"
+                                            class="box3 btn btn-danger" id="confirmDelete">
+                                        View CoverLetter
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="Kanban_card">
+                        <div class="Kanban_card-header xing">
+                            Xing
+                            <div class="jobs-badge">{{vm.newJobsXing.length}} jobs</div>
+                        </div>
+                        <div class="card-body">
+
+                            <div style="gap:0px!important" class="row Kanban_select-all">
+                                <input class="col-md-2" type="checkbox">
+                                <label class="col-md-10" style="font-size:16px;color:black!important;cursor:pointer;margin-bottom:0px!important" ng-click="vm.selectJob(row)">
+                                    Select All
+                                </label>
+                            </div>
+
+                            <div ng-click="vm.selectJob(row)" ng-repeat="row in vm.newJobsXing" class="item">
+                                <div style="gap:0px!important" class="row item-top">
+                                    <input class="col-md-2" type="checkbox">
+                                    <label class="col-md-10" style="color:black!important;cursor:pointer;margin-bottom:0px!important" ng-click="vm.selectJob(row)">
+                                        {{row.Title}}
+                                    </label>
+                                </div>
+                                <small>{{row.Company}}</small>
+                                <div class="row">
+                                    <span class="salary">{{row.Location}}</span>
+                                </div>
+
+                                <div style="margin-top:10px" class="badges">
+                                    <button style="height: 30px; font-size: 12px !important;" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#coverLetterModal"
+                                            ng-click="vm.getRow(row)" type="button"
+                                            class="box3 btn btn-danger" id="confirmDelete">
+                                        View CoverLetter
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div ng-if="vm.newJobs" style="text-align: center" class="actions">
+            <a ng-click="vm.getNewJobsAndGenerateCoverLetter()" style="height:40px!important" class="box3 btn primary">
+                <i class="ti ti-settings-automation"></i>
+                Apply Now
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="coverLetterModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-lg">
+
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            </div>
+
+            <div style="text-align:left!important;text-justify:inter-word!important" class="modal-body text-center">
+                <pre>
+                        {{vm.CoverLetter}}
+                    </pre>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                <button ng-click="vm.sendApplication()" type="button"
+                        class="box3 btn btn-danger" id="confirmDelete">
+                    Send
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

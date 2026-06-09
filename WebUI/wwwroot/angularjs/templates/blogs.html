@@ -1,0 +1,89 @@
+﻿<div style="display: flex; align-items: center; justify-content: center"
+     ng-controller="blogController as vm" ng-init="vm.initializeController()">
+
+    <div class="wrap">
+
+        <div style="text-align:center;margin-bottom:26px;margin-top:50px">
+            <h2 class="box4" style="margin-bottom:8px">
+                <span style="font-size: 42px" class="gradient-text">
+                    Your Job Hunt Playbook! 🎮
+                </span>
+            </h2>
+            <p style="color:var(--muted);font-weight:700">
+                Tips, tricks, and awesome stories to help you crush your job search! All in super simple words! 😊
+            </p>
+        </div>
+
+        <div class="col-md-12">
+            <div style="text-align:center!important" class="steps-grid_3" aria-hidden="false">
+
+                <div ng-repeat="row in vm.blogs"
+                     style="cursor: pointer; border: 1px solid lightpink" class="box3 step-card">
+                    <div style="width:100%;text-align:center!important">
+                        <img style="margin-bottom:50px"
+                             ng-src="{{$root.domain}}/Content/Images/BlogImage/{{row.FileName}}"
+                             src="/images/emptyImage.png" class="blog_image" alt="">
+                    </div>
+                    <div class="step-title">{{row.Title}}</div>
+                    <p style="color:var(--muted);font-weight:700">
+                        {{row.Description}}
+                    </p>
+                    <div ng-click="vm.getRow(row)" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#seeBlogModal" class="btn primary">
+                        <p style="width: 100% !important; margin-bottom: 0px !important ">
+                            Read More
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="seeBlogModal" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content modal-lg">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="text-center justify-content-center align-items-center p-4 p-sm-5 position-relative rounded-3">
+                            <img style="margin-bottom:50px"
+                                 ng-src="{{$root.domain}}/Content/Images/BlogImage/{{vm.item.FileName}}"
+                                 src="/images/emptyImage.png" class="blog_image" alt="">
+                        </div>
+
+                        <div style="text-align: center;" class="col-md-12">
+                            <div class="step-title">{{vm.item.Title}}</div>
+                        </div>
+
+                        <div style="text-align: center;" class="col-md-12">
+                            <p style="color:var(--muted);font-weight:700">
+                                {{vm.item.Description}}
+                            </p>
+                        </div>
+
+                        <div ng-repeat="row in vm.item.Details" class="mt-4">
+                            <img style="margin-bottom:10px!important" ng-if="row.Key == vm.inputType.Image"
+                                 ng-src="{{$root.domain}}/Content/Images/BlogImage/{{row.Value}}"
+                                 src="assets/images/element/gallery.svg"
+                                 class="blog_image" alt="">
+
+                            <p style="margin-bottom: 10px !important; color: var(--muted); font-weight: 700; text-align: center;" ng-if="row.Key == vm.inputType.Text"
+                               class="mb-0">{{row.Value}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
