@@ -1,0 +1,89 @@
+﻿<div style="display: flex; align-items: center; justify-content: center" 
+     ng-controller="masterController as vm" ng-init="vm.initializeController()">
+
+    <div style="box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;" class="auth-card">
+        <div class="robot-circle" style="height:70px;width:70px" aria-hidden="true">
+            <img src="/images/logo.png" style="height:50px">
+        </div>
+        <h1 style="margin-bottom:10px">Welcome Back</h1>
+        <p style="color: var(--muted); font-weight: 300; font-family: Segoe UI !important; font-size: 14px !important; text-align: center;">
+            Jump in and keep rockin' your job hunt!
+        </p>
+
+        <div class="col-md-12 box3 btn primary" style="text-align: center !important; border: 1px solid darkgray; background: transparent; background-color: transparent !important ">
+            <a style="width: 100% !important; text-decoration: none; color: var(--muted) !important" href="#!/login">
+                Sign in with Google
+                <i class="ti ti-brand-google"></i>
+            </a>
+        </div>
+
+        <div ng-click="vm.loginWithLinkedIn()"
+             class="col-md-12 box3 btn primary" 
+             style="text-align: center !important; margin-top: 5px; background:transparent; background-color: #196DB9 !important">
+            <a style="width:100%!important;text-decoration:none;color:white">
+                Sign in with LinkedIn
+                <i class="ti ti-brand-linkedin"></i>
+            </a>
+        </div>
+
+        <!-- CSS-only tabs -->
+        <input type="radio" id="tab-login" name="auth" checked>
+        <input type="radio" id="tab-register" name="auth">
+
+        <!--<div class="tabs">
+            <label class="box3" for="tab-login">Login</label>
+            <label class="box3" for="tab-register">Register</label>
+        </div>-->
+
+        <div style="margin-top:20px" class="tab-content">
+            <!-- LOGIN -->
+            <section id="login">
+                <form name="form" ng-submit="vm.login()" novalidate>
+                    <div class="field" ng-class="{'has-error':form.$submitted && form.Email.$error.required}">
+                        <label>Email</label>
+                        <input name="Email" ng-model="vm.item.Email" type="text" placeholder="you@example.com" required>
+                    </div>
+                    <div class="field" ng-class="{'has-error':form.$submitted && form.Password.$error.required}">
+                        <label>Password</label>
+                        <input name="Password" ng-model="vm.item.Password" type="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="box3 btn">Login</button>
+                    <label style="cursor:pointer" for="tab-register" class="switch-text">
+                        Don't have an account? <span>Register</span>
+                    </label>
+                </form>
+            </section>
+
+            <!-- REGISTER -->
+            <section id="register">
+                <form name="formSignUp" ng-submit="vm.signUp()" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 field" ng-class="{'has-error':formSignUp.$submitted && formSignUp.FirstName.$error.required}">
+                            <label>First Name</label>
+                            <input name="FirstName" ng-model="vm.item.FirstName" type="text" placeholder="Your name" required>
+                        </div>
+                        <div class="col-md-6 field" ng-class="{'has-error':formSignUp.$submitted && formSignUp.LastName.$error.required}">
+                            <label>Last Name</label>
+                            <input name="LastName" ng-model="vm.item.LastName" type="text" placeholder="Your last name" required>
+                        </div>
+                    </div>
+                    <div class="field" ng-class="{'has-error':formSignUp.$submitted && formSignUp.Email.$error.required}">
+                        <label>Email</label>
+                        <input name="Email" ng-model="vm.item.Email" type="text" placeholder="you@example.com" required>
+                    </div>
+                    <div class="field" ng-class="{'has-error':formSignUp.$submitted && formSignUp.Password.$error.required}">
+                        <label>Password</label>
+                        <input name="Password" ng-model="vm.item.Password" type="password" placeholder="Create a password" required>
+                    </div>
+                    <button type="submit" class="box3 btn">Register</button>
+                    <label style="cursor:pointer" for="tab-login" class="switch-text">
+                        Already have an account? <span>Login</span>
+                    </label>
+                </form>
+            </section>
+        </div>
+
+        <div class="footer-note">© 2025 Easy Actions. All rights reserved.</div>
+    </div>
+
+</div>

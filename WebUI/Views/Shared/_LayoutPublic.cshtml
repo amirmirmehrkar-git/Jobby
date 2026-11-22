@@ -1,0 +1,570 @@
+﻿<!DOCTYPE html>
+<html ng-controller="masterController as vm" ng-init="vm.initializeController()" ng-app="myapp" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Easy Apply</title>
+
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="stylesheet" href="/css/myStyles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/css/toastr.min.css" asp-append-version="true" />
+    <link href="/css/ng-table.min.css" rel="stylesheet">
+    <link href="/css/ADM-dateTimePicker.min.css" rel="stylesheet">
+    <link href="/css/isteven-multi-select.css" rel="stylesheet">
+    <link href="/css/bootstrap-rtl.min.css" rel="stylesheet">
+    @* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> *@
+
+    <link href="/css/tabler-icons.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="css/myDesign.css">
+    <link rel="stylesheet" href="css/myMenu.css">
+
+</head>
+<body>
+
+    <span us-spinner="{radius:30, width:8, length: 16}">
+    </span>
+    <div id="loaderContainer" ng-show="spinnerActive">
+        <div class="loaderLogo">
+            <div class="loader">
+            </div>
+        </div>
+    </div>
+
+    <div class="my_bg"></div>
+    <div class="my_bg my_bg2"></div>
+    <div class="my_bg my_bg3"></div>
+
+    <header style="display:none" id="publicMenu" class="site-header">
+        <a class="brand">
+            <div class="logo-mark">
+                <img src="/images/logo.png" style="height:40px">
+            </div>
+
+            <div class="logo-all">
+                <div class="step-title" style="margin-bottom:5px;font-weight:800">Easy Actions</div>
+                <div class="logoBottomTitle">Your AI career co-pilot</div>
+            </div>
+        </a>
+
+        <nav class="top-nav" role="navigation" aria-label="Main Navigation">
+
+            <a style="font-family: Segoe UI!important;font-size:17px!important" class="box4" href="#features">Why Jobby</a>
+            <a style="font-family: Segoe UI!important;font-size:17px!important" class="box4" href="#platforms">How It Works</a>
+            <a style="font-family: Segoe UI!important;font-size:17px!important" class="box4" href="#!/blogs">Blogs</a>
+
+            <a class="box3 btn ghost" href="#pricing">
+                Pricing
+                <i class="ti ti-coin"></i>
+            </a>
+            <a class="box3 btn primary" href="#!/login">
+                Get Started Free
+                <i class="ti ti-arrow-right"></i>
+            </a>
+        </nav>
+    </header>
+
+    <header ng-controller="profileController as vm" ng-init="vm.initializeController()"
+            style="display:none;padding-left:15px!important;padding-right:15px!important" id="userMenu" class="site-header">
+        <a class="brand">
+            <div class="logo-mark">
+                <img src="/images/logo.png" style="height:40px">
+            </div>
+
+            <div class="logo-all">
+                <div class="step-title" style="margin-bottom:5px;font-weight:800">Easy Actions</div>
+                <div class="logoBottomTitle">Your AI career co-pilot</div>
+            </div>
+        </a>
+
+        <nav class="top-nav" role="navigation" aria-label="Main Navigation">
+
+            <div ng-click="vm.goTo('/user/dashboard')" ng-class="{'selectSection':$root.selectedDashboard}"
+                 class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-home"></i>
+                </div>
+                <div class="step-desc">
+                    Home
+                </div>
+            </div>
+            <div ng-click="vm.goTo('/user/jobTracker')" ng-class="{'selectSection':$root.selectedJobTracker}"
+                 class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-search"></i>
+                </div>
+                <div class="step-desc">
+                    Job Tracker
+                </div>
+            </div>
+            <div ng-class="{'selectSection':$root.selectedDocuments}"
+                 ng-click="vm.goTo('/user/documents')" class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-file"></i>
+                </div>
+                <div class="step-desc">
+                    Documents
+                </div>
+            </div>
+            <div ng-class="{'selectSection':$root.selectedEmailCenter}"
+                 ng-click="vm.goTo('/user/emailCenter')" class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-calendar"></i>
+                </div>
+                <div class="step-desc">
+                    Email Center
+                </div>
+            </div>
+            <div ng-class="{'selectSection':$root.selectedSetting}"
+                 ng-click="vm.goTo('/user/setting')" class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-settings"></i>
+                </div>
+                <div class="step-desc">
+                    Settings
+                </div>
+            </div>
+            <div ng-class="{'selectSection':$root.selectedTicket}"
+                 ng-click="vm.goTo('/user/tickets')" class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-headset"></i>
+                </div>
+                <div class="step-desc">
+                    Ticket
+                </div>
+            </div>
+        </nav>
+
+        <div style="float:right!important">
+            <a style="padding:8px 12px!important" class="box3 btn primary"
+               ng-click="vm.getUserPositions()"
+               data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#seePositionsModal">
+                {{vm.UserFullName}}
+                <i class="ti ti-user"></i>
+            </a>
+            <a style="padding:8px 12px!important" class="box3 btn ghost" href="@Url.Action("logoff", "account", new { area = "" })">
+                Logout
+                <i class="ti ti-door-exit"></i>
+            </a>
+        </div>
+
+    </header>
+
+    <header ng-controller="profileController as vm" ng-init="vm.initializeController()"
+            style="display:none;padding-left:15px!important;padding-right:15px!important" id="adminMenu" class="site-header">
+        <a class="brand">
+            <div class="logo-mark">
+                <img src="/images/logo.png" style="height:40px">
+            </div>
+
+            <div class="logo-all">
+                <div class="step-title" style="margin-bottom:5px;font-weight:800">Easy Actions</div>
+                <div class="logoBottomTitle">Your AI career co-pilot</div>
+            </div>
+        </a>
+
+        <nav class="top-nav" role="navigation" aria-label="Main Navigation">
+
+            <div ng-click="vm.goTo('/admin/dashboard')" ng-class="{'selectSection':$root.adminSelectedDashboard}"
+                 class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-home"></i>
+                </div>
+                <div class="step-desc">
+                    Home
+                </div>
+            </div>
+            <div ng-class="{'selectSection':$root.adminSelectedUsers}"
+                 ng-click="vm.goTo('/admin/users')" class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-users"></i>
+                </div>
+                <div class="step-desc">
+                    Users
+                </div>
+            </div>
+            <div ng-class="{'selectSection':$root.adminSelectedBlogs}"
+                 ng-click="vm.goTo('/admin/blogs')" class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-news"></i>
+                </div>
+                <div class="step-desc">
+                    Blogs
+                </div>
+            </div>
+            <div ng-class="{'selectSection':$root.adminSelectedSetting}"
+                 ng-click="vm.goTo('/admin/setting')" class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-settings"></i>
+                </div>
+                <div class="step-desc">
+                    Setting
+                </div>
+            </div>
+            <div ng-class="{'selectSection':$root.adminSelectedTicket}"
+                 ng-click="vm.goTo('/admin/tickets')" class="box4" style="text-align:center!important;margin-right: 15px;">
+                <div>
+                    <i style="color:blue" class="ti ti-headset"></i>
+                </div>
+                <div class="step-desc">
+                    Ticket
+                </div>
+            </div>
+        </nav>
+
+        <div style="float:right!important">
+            <a style="padding:8px 12px!important" class="box3 btn primary" href="#!/user/setting">
+                {{vm.UserFullName}}
+                <i class="ti ti-user"></i>
+            </a>
+            <a style="padding:8px 12px!important" class="box3 btn ghost" href="@Url.Action("logoff", "account", new { area = "" })">
+                Logout
+                <i class="ti ti-door-exit"></i>
+            </a>
+        </div>
+
+    </header>
+
+    <div class="col-12">
+        @RenderBody()
+    </div>
+
+    <div ng-controller="profileController as vm"
+         class="modal fade" id="seePositionsModal" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <div style="margin-right: 20px;margin-left: 20px;" class="row">
+                        <div ng-class="{'my_highlight': row.IsSelected}"
+                            ng-click="vm.selectPosition(row.Id)" ng-repeat="row in $root.positions"
+                             style="margin-bottom: 10px;cursor: pointer; border: 1px solid lightpink" class="box4 step-card">
+                            <div class="step-title">{{row.Title}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer id="mainFooter" class="site-footer" role="contentinfo">
+        <div style="text-align:center">
+            <div class="step-title" style="margin-bottom:5px;font-weight:800">Easy Actions</div>
+            <div style="margin-bottom:12px;font-weight:400;font-size:10px">Your AI career co-pilot</div>
+            <p class="small">© 2024 Easy Actions. All rights reserved. Made with ❤️ for ambitious professionals.</p>
+            <div style="margin-top:12px;display:flex;gap:14px;justify-content:center">
+                <a href="#" style="color:var(--muted);text-decoration:none;font-weight:700">Privacy</a>
+                <a href="#" style="color:var(--muted);text-decoration:none;font-weight:700">Terms</a>
+                <a href="#" style="color:var(--muted);text-decoration:none;font-weight:700">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    @* <div id="sidebar">
+        <div class="sidebar-header">
+            <h3>Easy Actions</h3>
+            <span class="subtitle">AI Co-pilot</span>
+            <button class="close-btn" onclick="toggleMenu()">×</button>
+        </div>
+
+        <div class="user-info">
+            <div>
+                <img ng-if="vm.UserImageName === 'undefined'" class="rounded-circle"
+                     src="/images/emptyImage.png" />
+                <img ng-if="vm.UserImageName != 'undefined'" class="rounded-circle"
+                     ng-src="{{$root.domain}}/Content/Images/ProfileImages/{{vm.UserImageName}}" />
+            </div>
+            <div>
+                <div class="user-name">{{vm.UserFullName}}</div>
+                <div class="user-email">{{vm.UserEmail}}</div>
+                <div class="user-email">{{vm.WalletAmount}}$</div>
+            </div>
+        </div>
+
+        <ul ng-if="vm.UserRole == 'User'" class="menu-list">
+            <li style="padding-left:10px" ng-class="{'selectSection':$root.selectedDashboard}"
+                ng-click="vm.goTo('/user/dashboard')"><i class="ti ti-home"></i> Home</li>
+
+            <li style="padding-left:10px" ng-click="vm.showSubmenu = !vm.showSubmenu">
+                <i class="ti ti-calendar"></i>
+                Profile
+                <i class="arrow ti ti-chevron-down"></i>
+            </li>
+
+            <li ng-class="{'selectSection':$root.selectedSkills}"
+                ng-click="vm.goTo('/user/skills')" ng-if="vm.showSubmenu" class="my_submenu">
+                Skills
+            </li>
+            <li ng-class="{'selectSection':$root.selectedExperiences}"
+                ng-click="vm.goTo('/user/experiences')" ng-if="vm.showSubmenu" class="my_submenu">
+                Experiences
+            </li>
+            <li ng-class="{'selectSection':$root.selectedEducations}"
+                ng-click="vm.goTo('/user/educations')" ng-if="vm.showSubmenu" class="my_submenu">
+                Educations
+            </li>
+            <li ng-class="{'selectSection':$root.selectedCertificate}"
+                ng-click="vm.goTo('/user/certificates')" ng-if="vm.showSubmenu" class="my_submenu">
+                Certificates
+            </li>
+            <li ng-class="{'selectSection':$root.selectedDocuments}"
+                ng-click="vm.goTo('/user/documents')" ng-if="vm.showSubmenu" class="my_submenu">
+                Documents
+            </li>
+
+            <li style="padding-left:10px" ng-class="{'selectSection':$root.selectedJobTracker}"
+                ng-click="vm.goTo('/user/jobTracker')"><i class="ti ti-calendar"></i> Job Tracker</li>
+            <li style="padding-left:10px" ng-class="{'selectSection':$root.selectedEmailCenter}"
+                ng-click="vm.goTo('/user/emailCenter')"><i class="ti ti-calendar"></i>Email Center</li>
+            <li style="padding-left:10px" ng-class="{'selectSection':$root.selectedTicket}"
+                ng-click="vm.goTo('/user/tickets')"><i class="ti ti-headset"></i> Tickets</li>
+            <li style="padding-left:10px" ng-class="{'selectSection':$root.selectedTransactions}"
+                ng-click="vm.goTo('/user/transactions')"><i class="ti ti-list"></i> Transactions</li>
+            <li style="padding-left:10px" ng-class="{'selectSection':$root.selectedSetting}"
+                ng-click="vm.goTo('/user/setting')"><i class="ti ti-settings"></i> Settings</li>
+        </ul>
+
+        <ul ng-if="vm.UserRole == 'Admin'" class="menu-list">
+            <li ng-click="vm.goTo('/admin/dashboard')"><i class="ti ti-home"></i> Home</li>
+            <li ng-click="vm.goTo('/admin/users')"><i class="ti ti-calendar"></i> Users</li>
+            <li ng-click="vm.goTo('/admin/tickets')"><i class="ti ti-settings"></i> Tickets</li>
+        </ul>
+
+        <div class="logout-section">
+            <a href="@Url.Action("logoff", "account", new { area = "" })" class="col-md-12 logout-btn"><i class="ti ti-logout"></i> Logout</a>
+        </div>
+    </div> *@
+
+    <style>
+        /* شناور پایین راست */
+        .chat-icon {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(135deg, #EA4296, #5F33E5);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 999;
+        }
+
+            .chat-icon:hover {
+                transform: scale(1.1);
+            }
+
+        /* پنجره چت */
+        .chat-box {
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            width: 800px;
+            height: 500px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            background: linear-gradient(90deg, #5F33E5, #EA4296);
+            padding: 12px 15px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            .chat-header h3 {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            .chat-header small {
+                font-size: 12px;
+                color: rgba(255,255,255,0.9);
+            }
+
+        .chat-content {
+            flex: 1;
+            background: #fffaf3;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .bot-message {
+            background: #fff;
+            border: 1px solid #ffe2a6;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .chat-footer {
+            background: #fff;
+            border-top: 1px solid #ddd;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .chat-footer input {
+                flex: 1;
+                border: none;
+                outline: none;
+                padding: 8px 12px;
+                border-radius: 20px;
+                background: #f5f5f5;
+                font-size: 14px;
+            }
+
+            .chat-footer button {
+                background: linear-gradient(135deg, #EA4296, #5F33E5);
+                border: none;
+                color: white;
+                border-radius: 50%;
+                width: 36px;
+                height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+            .quick-actions button {
+                background: #fff;
+                border: 1px solid #ffce73;
+                border-radius: 8px;
+                padding: 5px 10px;
+                font-size: 13px;
+                cursor: pointer;
+                color: #5F33E5;
+                transition: background 0.3s;
+            }
+
+                .quick-actions button:hover {
+                    background: #ffebc2;
+                }
+    </style>
+
+    <div class="chat-icon" id="chatIcon">
+        <div style="border:0px!important" class="logo-mark">
+            <img src="/images/logochatbot.png" style="height:75px">
+        </div>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+        <div class="chat-header">
+            <div>
+                <h3>Jobby - AI Career Co-pilot</h3>
+                <small>Easy Actions Help Center</small>
+            </div>
+            <span style="cursor:pointer;" onclick="toggleChat()">✖</span>
+        </div>
+
+        <div class="chat-content" id="chatContent">
+            <div class="bot-message">
+                Hello! I'm Jobby, your AI career co-pilot! 🚀 I can help you in any language
+                with resume uploads, job applications, cover letters, and navigating
+                the entire Easy Actions platform. What would you like to know?
+            </div>
+
+            <div class="quick-actions">
+                <button>Start Visual Tutorial</button>
+                <button>Upload Resume</button>
+                <button>Job Matching</button>
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            <input type="text" placeholder="Ask Jobby anything about Easy Actions..." />
+            <button>➤</button>
+        </div>
+    </div>
+
+    <script>
+        const chatIcon = document.getElementById("chatIcon");
+        const chatBox = document.getElementById("chatBox");
+
+        chatIcon.addEventListener("click", () => {
+          chatBox.style.display = chatBox.style.display === "flex" ? "none" : "flex";
+        });
+
+        function toggleChat() {
+          chatBox.style.display = "none";
+        }
+    </script>
+
+
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/toastr.min.js"></script>
+    <script src="/js/myJavaScripts.js"></script>
+    <script src="/js/angularjs/angular.js"></script>
+    <script src="/js/angularjs/angular-route.js"></script>
+    <script src="/js/ng-table.min.js"></script>
+    <script src="/js/ngFileUpload.js"></script>
+    <script src="/js/angular-loading-spinner.js"></script>
+    <script src="/js/ADM-dateTimePicker.min.js"></script>
+    <script src="/js/fullcalendar-Jalaali/moment.min.js"></script>
+    <script src="/js/moment-timezone.min.js"></script>
+    <script src="/js/fullcalendar-Jalaali/moment-jalaali.js"></script>
+    <script src="/js/fullcalendar-Jalaali/fullcalendar.min.js"></script>
+    <script src="/js/fullcalendar-Jalaali/local/fa.js"></script>
+    <script src="/js/ng-intl-tel-input/intlTelInput.js"></script>
+    <script src="/js/ng-intl-tel-input/utils.js"></script>
+    <script src="/js/ng-intl-tel-input/ng-intl-tel-input.js"></script>
+    <script src="/js/isteven-multi-select.js"></script>
+
+    <script src="/angularjs/controllers/masterController.js"></script>
+    <script src="/angularjs/services/ajaxService.js"></script>
+    <script src="/angularjs/services/profileService.js"></script>
+    <script src="/angularjs/controllers/routing.js"></script>
+    <script src="/angularjs/services/enums.js"></script>
+    <script src="/angularjs/controllers/dashboardController.js"></script>
+    <script src="/angularjs/controllers/userController.js"></script>
+    <script src="/angularjs/controllers/ticketController.js"></script>
+    <script src="/angularjs/controllers/profileController.js"></script>
+    <script src="/angularjs/controllers/skillController.js"></script>
+    <script src="/angularjs/controllers/experienceController.js"></script>
+    <script src="/angularjs/controllers/educationController.js"></script>
+    <script src="/angularjs/controllers/certificateController.js"></script>
+    <script src="/angularjs/controllers/documentController.js"></script>
+    <script src="/angularjs/controllers/suggestController.js"></script>
+    <script src="/angularjs/controllers/transactionController.js"></script>
+    <script src="/angularjs/controllers/emailController.js"></script>
+    <script src="/angularjs/controllers/blogController.js"></script>
+    <script src="/angularjs/controllers/settingController.js"></script>
+
+</body>
+</html>

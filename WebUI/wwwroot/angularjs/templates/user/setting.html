@@ -1,0 +1,549 @@
+﻿<div ng-controller="userController as vm" ng-init="vm.initializeController()">
+
+    <div class="wrap">
+
+        <div class="d-flex">
+            <a style="margin-right:30px" class="brand">
+                <div class="logo-mark">
+                    <img src="/images/logo.png" style="height:40px">
+                </div>
+
+                <div class="logo-all">
+                    <div class="step-title" style="margin-bottom:5px;font-weight:800">Easy Actions</div>
+                    <div class="logoBottomTitle">Your AI career co-pilot</div>
+                </div>
+            </a>
+            <div style="text-align:center;margin-bottom:26px;margin-top:50px">
+                <h2 class="box4" style="margin-bottom:8px">
+                    <span style="font-size: 42px" class="gradient-text">
+                        Settings & Preferences ⚙️
+                    </span>
+                </h2>
+                <p style="color: var(--muted); font-weight: 700; text-align: left; ">
+                    Tweak your profile and let's make your job hunt awesome!
+                </p>
+            </div>
+        </div>
+
+
+        <div style="background-color: transparent !important; border: 1px solid lightpink" class="card">
+
+            <input type="radio" id="tab-profile" name="tabs" checked>
+            <input type="radio" id="tab-notification" name="tabs">
+            <input type="radio" id="tab-ai" name="tabs">
+            <input type="radio" id="tab-security" name="tabs">
+
+            <div class="tabs" aria-hidden="false">
+                <label class="box3" for="tab-profile">Profile</label>
+                <label class="box3" for="tab-notification">Notifications</label>
+                <label class="box3" for="tab-ai">AI</label>
+                <label class="box3" for="tab-security">Security</label>
+            </div>
+
+            <div class="tab-contents">
+
+                <section id="profile">
+
+                    <div style="text-align: center;">
+                        <div class="step-title" style="font-weight:700;font-size:16px">
+                            Profile Information
+                        </div>
+                        <p class="small-note">Keep your profile updated for better job matching</p>
+                    </div>
+
+                    <div class="card" style="margin-bottom: 0px !important;background-color: transparent !important; border: 1px solid lightpink">
+                        <div style="margin-bottom:20px;margin-top:20px"
+                             class="d-flex flex-column col-md-12">
+                            <div class="d-flex">
+                                <div>
+                                    <img ng-if="vm.item.ImageName"
+                                         style="height: 100px; border-radius:360px; object-fit: cover; width: 100px"
+                                         ng-src="/Content/Images/ProfileImages/{{vm.item.ImageName}}" />
+
+                                    <img ng-if="!vm.item.ImageName"
+                                         style="height: 100px; border-radius: 360px; object-fit: cover; width: 100px"
+                                         src="/images/emptyImage.png" />
+                                </div>
+                                <div style="width:100%;margin-left:10px">
+                                    <label>{{vm.item.FullName}}</label>
+                                    <label>{{vm.item.Email}}</label>
+
+                                    <input style="background-color:transparent;width:250px;border:0!important;padding:0!important" type="file" accept="image/jpg, image/jpeg, image/png"
+                                           ngf-select="UploadUserImage($files)" />
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="profile-container">
+                        <div class="row">
+
+                            <div style="align-items: start; padding-right: 0 !important" class="row">
+                                <div style="padding-right: 0 !important" class="col-md-6">
+                                    <div class="card" style="margin-bottom: 0px !important;background-color: transparent !important; border: 1px solid lightpink">
+                                        <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                                            <div>
+                                                <div class="step-title" style="font-weight:700;font-size:16px">
+                                                    <i style="color:purple" class="ti ti-user"></i>
+                                                    Personal Details
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="col-md-12">
+                                                <label>First Name</label>
+                                                <input class="my_input_text" type="text" ng-model="vm.item.FirstName">
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <label>Last Name</label>
+                                                <input class="my_input_text" type="text" ng-model="vm.item.LastName">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="padding-right: 0 !important" class="col-md-6">
+                                    <div class="card" style="margin-bottom:0px!important;background-color: transparent !important; border: 1px solid lightpink">
+                                        <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                                            <div>
+                                                <div class="step-title" style="font-weight:700;font-size:16px">
+                                                    <i style="color:purple" class="ti ti-map-pin"></i>
+                                                    Contact Information
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="col-md-12">
+                                                <label>Phone Number</label>
+                                                <input class="my_input_text" type="text" ng-model="vm.item.PhoneNumber">
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <label>Email Address</label>
+                                                <input class="my_input_text" disabled type="email" ng-model="vm.item.Email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div style="margin-top:15px" class="col-md-12">
+                                <div class="card" style="margin-bottom:0px!important;background-color: transparent !important; border: 1px solid lightpink">
+                                    <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                                        <div>
+                                            <div class="step-title" style="font-weight:700;font-size:16px">
+                                                <i style="color:purple" class="ti ti-manual-gearbox"></i>
+                                                Job Information
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>LinkedIn UserName</label>
+                                                <input class="my_input_text" type="text" ng-model="vm.item.LinkedInUserName">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>LinkedIn Password</label>
+                                                <input class="my_input_text" type="text" ng-model="vm.item.LinkedInPassword">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>StepStone UserName</label>
+                                                <input class="my_input_text" type="text" ng-model="vm.item.StepStoneUserName">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>StepStone Password</label>
+                                                <input class="my_input_text" type="text" ng-model="vm.item.StepStonePassword">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Xing UserName</label>
+                                                <input class="my_input_text" type="text" ng-model="vm.item.XingUserName">
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Xing Password</label>
+                                                <input class="my_input_text" type="text" ng-model="vm.item.XingPassword">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:20px" class="d-flex flex-column align-items-center">
+                            <button style="height:40px!important" ng-click="vm.updateProfile()" type="button"
+                                    class="box3 btn btn-danger" id="confirmDelete">
+                                Update Profile
+                            </button>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section id="notification">
+
+                    <div style="text-align: center;">
+                        <div class="step-title" style="font-weight:700;font-size:16px">
+                            Notification Preferences
+                        </div>
+                        <p class="small-note">
+                            Choose how you want to be notified about your job search
+                        </p>
+                    </div>
+
+                    <div class="switch_wrapper">
+                        <div class="switch_card switch_green">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:green" class="ti ti-mail"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">Email Responses</div>
+                                    <div class="switch_desc">Get notified when employers respond to your applications</div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_EmailResponses" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('EmailResponses')" class="switch_slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="switch_card switch_blue">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:blue" class="ti ti-check"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">Application Updates</div>
+                                    <div class="switch_desc">Status changes and application confirmations</div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_ApplicationUpdates" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('ApplicationUpdates')" class="switch_slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="switch_card switch_purple">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:deeppink" class="ti ti-calendar"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">Interview Reminders</div>
+                                    <div class="switch_desc">Reminders before scheduled interviews</div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_InterviewReminders" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('InterviewReminders')" class="switch_slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="switch_card switch_orange">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:orangered" class="ti ti-message"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">Weekly Digest</div>
+                                    <div class="switch_desc">Summary of your job search activity</div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_WeeklyDigest" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('WeeklyDigest')" class="switch_slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="switch_card switch_red">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:red" class="ti ti-file-info"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">Rejection Notifications</div>
+                                    <div class="switch_desc">Get notified about application rejections</div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_RejectionNotifications" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('RejectionNotifications')" class="switch_slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </section>
+
+                <section id="ai">
+
+                    <div style="text-align: center;">
+                        <div class="step-title" style="font-weight:700;font-size:16px">
+                            AI Automation Settings
+                        </div>
+                        <p class="small-note">
+                            Configure how AI assists with your job applications
+                        </p>
+                    </div>
+
+                    <div class="switch_wrapper">
+                        <div class="switch_card switch_red">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:red" class="ti ti-file-info"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">Apply Type</div>
+                                    <div class="switch_desc">Select one of apply types list</div>
+                                </div>
+                            </div>
+                            <label style="width:auto!important" class="switch_toggle">
+                                <select style="border:0px!important;font-size:14px;background-color:transparent!important" class="form-select form-select-lg" data-allow-clear="true"
+                                        name="Value" ng-model="vm.item.ApplyType"
+                                        ng-init="vm.item.ApplyType || vm.applyTypes[0].id"
+                                        ng-options="option.id as option.title for option in vm.applyTypes">
+                                </select>
+                            </label>
+                        </div>
+                        <div class="switch_card switch_green">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:blue" class="ti ti-check"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">
+                                        Smart Application Timing
+                                    </div>
+                                    <div class="switch_desc">
+                                        AI optimizes when to send applications for best response rates
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_SmartApplicationTiming" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('SmartApplicationTiming')" class="switch_slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="switch_card switch_blue">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:green" class="ti ti-mail"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">
+                                        Auto Thank You Emails
+                                    </div>
+                                    <div class="switch_desc">
+                                        Automatically send thank you emails after interview confirmations
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_AutoThankYouEmails" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('AutoThankYouEmails')" class="switch_slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="switch_card switch_purple">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:deeppink" class="ti ti-clock"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">
+                                        Auto Follow-up Messages
+                                    </div>
+                                    <div class="switch_desc">
+                                        Send follow-up messages if no response after 2 weeks
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_AutoFollowUpMessages" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('AutoFollowUpMessages')" class="switch_slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="switch_card switch_orange">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:orangered" class="ti ti-message"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">
+                                        Request Feedback After Rejection
+                                    </div>
+                                    <div class="switch_desc">
+                                        Automatically ask for feedback to improve future applications
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_RequestFeedbackAfterRejection" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('RequestFeedbackAfterRejection')" class="switch_slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="switch_card switch_red">
+                            <div class="switch_left">
+                                <div class="switch_icon">
+                                    <i style="color:rebeccapurple" class="ti ti-calendar"></i>
+                                </div>
+                                <div>
+                                    <div class="switch_title">
+                                        Weekend Applications
+                                    </div>
+                                    <div class="switch_desc">
+                                        Allow AI to send applications on weekends
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="switch_toggle">
+                                <input id="chk_WeekendApplications" type="checkbox" checked>
+                                <span ng-click="vm.addOrUpdateSetting('WeekendApplications')" class="switch_slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </section>
+
+                <section id="security">
+
+                    <div style="text-align: center;">
+                        <div class="step-title" style="font-weight:700;font-size:16px">
+                            Privacy & Security
+                        </div>
+                        <p class="small-note">
+                            Manage your account security and data privacy
+                        </p>
+                    </div>
+
+                    <div class="profile-container">
+
+                        <div style="align-items: start; padding-right: 0 !important" class="row">
+
+                            <div style="margin-top:15px" class="col-md-12">
+                                <div class="card" style="margin-bottom:0px!important;background-color: transparent !important; border: 1px solid lightpink">
+                                    <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                                        <div>
+                                            <div class="step-title" style="font-weight:700;font-size:16px">
+                                                <i style="color:purple" class="ti ti-manual-gearbox"></i>
+                                                Account Security
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="small-note">
+                                        You can change youe password here.
+                                    </p>
+                                    <div>
+                                        <button style="height: 40px !important; background-color: #dc3545!important;"
+                                                data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#changePasswordModal" type="button"
+                                                class="box3 btn btn-danger" id="confirmDelete">
+                                            Change Password
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:15px" class="col-md-12">
+                                <div class="card" style="margin-bottom:0px!important;background-color: transparent !important; border: 1px solid lightpink">
+                                    <div style="display:flex;align-items:center;margin-bottom:25px;margin-top:15px">
+                                        <div>
+                                            <div class="step-title" style="font-weight:700;font-size:16px">
+                                                <i style="color:purple" class="ti ti-manual-gearbox"></i>
+                                                Danger Zone
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="small-note">
+                                        Permanently delete your account and all associated data. This action cannot be undone.
+                                    </p>
+                                    <div>
+                                        <button style="height: 40px !important; background: orangered!important;"
+                                                 data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteAccountModal" type="button"
+                                                class="box3 btn btn-danger" id="confirmDelete">
+                                            Delete Account
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="addOrUpdateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="field col-md-12">
+                            <label style="float:left!important">Current Password</label>
+                            <input ng-model="vm.currentPassword" type="text">
+                        </div>
+                        <div class="field col-md-12">
+                            <label style="float:left!important">New Password</label>
+                            <input ng-model="vm.newPassword" type="text">
+                        </div>
+                        <div class="field col-md-12">
+                            <label style="float:left!important">New Password Confirm</label>
+                            <input ng-model="vm.confirmPassword" type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.changePassword()" type="button" class="box3 btn btn-danger" id="confirmDelete">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    Are you sure you want to delete yout account?
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-click="vm.deleteAccount()" type="button" class="box3 btn btn-danger" id="confirmDelete">Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

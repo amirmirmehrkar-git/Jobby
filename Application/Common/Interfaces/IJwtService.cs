@@ -1,0 +1,7 @@
+﻿namespace Application.Common.Interfaces
+{
+    public interface IJwtService
+    {
+        string GenerateJwtToken(string Roles);
+    }
+}

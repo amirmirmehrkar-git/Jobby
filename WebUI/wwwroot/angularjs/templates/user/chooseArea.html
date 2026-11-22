@@ -1,0 +1,93 @@
+﻿<div ng-controller="suggestController as vm" ng-init="vm.initializeController()">
+
+    <div class="wrap">
+
+        <div style="text-align:center;margin-bottom:26px;margin-top:50px">
+            <h2 class="box4" style="margin-bottom:8px">
+                <span style="font-size: 42px" class="gradient-text">
+                    Awesome! Pick Your Region! 🌍
+                </span>
+            </h2>
+            <p style="color:var(--muted);font-weight:700">
+                Choose where you're applying so we format your resume perfectly! 🎯
+            </p>
+        </div>
+
+        <div class="col-md-12">
+            <div style="text-align:center!important" class="steps-grid_3" aria-hidden="false">
+
+                <div data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#seeResumeTemplateModal"
+                     style="cursor: pointer; border: 1px solid lightpink" class="box3 step-card">
+                    <div style="width:100%;text-align:center!important">
+                        <div class="step-icon4">
+                            US
+                        </div>
+                    </div>
+                    <div class="step-title">North America</div>
+                    <div class="btn primary">
+                        <p style="width: 100% !important; margin-bottom: 0px !important ">
+                            Short Resume, no personal information
+                        </p>
+                    </div>
+                </div>
+
+                <div data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#seeResumeTemplateModal"
+                     style="cursor: pointer; border: 1px solid lightpink" class="box3 step-card">
+                    <div style="width:100%;text-align:center!important">
+                        <div class="step-icon4">
+                            EU
+                        </div>
+                    </div>
+                    <div class="step-title">Western Europe</div>
+                    <div class="btn primary">
+                        <p style="width: 100% !important; margin-bottom: 0px !important ">
+                            Formal CV (sometimes with photo)
+                        </p>
+                    </div>
+                </div>
+
+                <div data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#seeResumeTemplateModal"
+                     style="cursor: pointer; border: 1px solid lightpink" class="box3 step-card">
+                    <div style="width:100%;text-align:center!important">
+                        <div class="step-icon4">
+                            Asia
+                        </div>
+                    </div>
+                    <div class="step-title">Middle East</div>
+                    <div class="btn primary">
+                        <p style="width: 100% !important; margin-bottom: 0px !important ">
+                            Formal + Personal Information
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="seeResumeTemplateModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <div ng-click="vm.selectTemplate('t_1')" id="t_1"
+                         style="border-radius:8px;border:2px dotted darkorange;height:400px;cursor:pointer;padding:10px">
+                        <img style="width: 100%; height: 100%; object-fit: contain "
+                             src="../../../images/template1.jpeg" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="box3 btn ghost" data-bs-dismiss="modal">Close</button>
+                    <button ng-if="vm.btnDownload" ng-click="vm.downloadResume()" type="button" class="box3 btn btn-danger" id="confirmDelete">Donwload</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

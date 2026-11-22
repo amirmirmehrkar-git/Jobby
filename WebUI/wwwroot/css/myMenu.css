@@ -1,0 +1,160 @@
+﻿#sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px; /* پنهان در حالت عادی */
+    width: 280px;
+    height: 100%;
+    background: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+    transition: left 0.4s ease;
+    padding: 20px;
+    z-index: 1000;
+}
+
+    #sidebar.active {
+        left: 0;
+    }
+
+.sidebar-header {
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    height: 60px;
+    margin-bottom: 8px;
+}
+
+.sidebar-header h3 {
+    color: #ff7b29;
+    margin: 5px 0 0;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #999;
+}
+
+.close-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: #ff7b29;
+    cursor: pointer;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    background: #ff7b29;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.user-email {
+    font-size: 13px;
+    color: #777;
+}
+
+.plan {
+    display: inline-block;
+    background: #ffe5d1;
+    color: #ff7b29;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-top: 3px;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 25px;
+}
+
+    .menu-list li {
+        padding: 10px 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #333;
+        transition: 0.2s;
+    }
+
+        .menu-list li:hover {
+            color: #ff7b29;
+        }
+
+.logout-section {
+    position: absolute;
+    bottom: 30px;
+/*    width: 100%;*/
+    text-align: center;
+}
+
+.logout-btn {
+    border: 1px solid #ff7b29;
+    background: transparent;
+    color: #ff7b29;
+    border-radius: 8px;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+    .logout-btn:hover {
+        background: #ff7b29;
+        color: white;
+    }
+
+    .menu-list .submenu {
+  list-style: none;
+  padding-left: 25px;
+  margin-top: 5px;
+  display: none;
+  flex-direction: column;
+}
+
+.menu-list .submenu li {
+  font-size: 14px;
+  color: #555;
+  padding: 6px 0;
+}
+
+.menu-list .submenu li:hover {
+  color: #ff7b29;
+}
+
+.menu-list .has-submenu.open .submenu {
+  display: flex;
+}
+
+.menu-list .arrow {
+  transition: transform 0.3s ease;
+}
+
+.menu-list .has-submenu.open .arrow {
+  transform: rotate(180deg);
+}

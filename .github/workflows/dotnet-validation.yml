@@ -1,0 +1,45 @@
+name: .NET validation
+
+on:
+  push:
+    branches:
+      - fix/audit-2026-11-22
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dotnet-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Install .NET SDK 7 (legacy compatibility validation only)
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          dotnet-version: 7.0.410
+      - name: Check shared package and EF tool versions
+        run: python3 scripts/validate-dependency-versions.py
+      - name: Restore local development tools
+        working-directory: WebUI
+        run: dotnet tool restore
+      - name: Check EF tool starts without accessing a database
+        working-directory: WebUI
+        run: dotnet ef --version
+      - name: Restore dependencies
+        run: dotnet restore WebUI/WebUI.csproj
+      - name: Build without running application or accessing production data
+        run: dotnet build WebUI/WebUI.csproj --configuration Release --no-restore
+      - name: Test authorization, sorting and payment rejection without a database
+        run: dotnet run --project tests/DependencySmoke/DependencySmoke.csproj --configuration Release
