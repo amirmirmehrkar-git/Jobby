@@ -18,7 +18,9 @@ The repository's `global.json` pins the SDK used for legacy validation. A framew
 
 ## Dependency maintenance
 
-ASP.NET Core and Entity Framework packages are aligned at `7.0.20`; the local `dotnet-ef` tool uses the same release. Shared package references must move together across the four projects. CI rejects mismatched versions, restores local tools, checks `dotnet ef --version`, and builds the web project. The smoke checks exercise the application's JWT decoder with valid, altered, expired and differently signed tokens, and verify that dynamic table sorting accepts property names and rejects method expressions. They do not start the application or connect to a database.
+ASP.NET Core and Entity Framework packages are aligned at `7.0.20`; the local `dotnet-ef` tool uses the same release. Shared package references must move together across the four projects. CI rejects mismatched versions, restores local tools, checks `dotnet ef --version`, and builds the web project. The smoke checks exercise the application's JWT decoder with valid, altered, expired and differently signed tokens, require exact role membership, and verify that dynamic table sorting accepts property names and rejects method expressions. They do not start the application or connect to a database.
+
+Protected endpoints compare complete comma-separated role names with case-sensitive matching. An authenticated user needs at least one role listed by the endpoint. Empty role claims, partial names, missing tokens and empty role requirements are forbidden; whitespace around role names is ignored. None of the existing protected endpoints uses an empty role requirement. Regression checks cover both permitted multi-role access and invalid signed role claims.
 
 The obsolete, unused `ICSharpCode.SharpZipLib.dll` reference has been removed. The Dynamic LINQ dependency uses the patched parser's default restrictions; do not enable arbitrary method calls in order to accept untrusted sort input.
 

@@ -5,7 +5,13 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.IdentityModel.Tokens;
+using WebAPI.CustomFilters;
 using WebUI.Services;
 
 // Exercise the application's real token decoder without starting the web host
@@ -32,6 +38,19 @@ void Reject(Action action, string message)
         return;
     }
     throw new InvalidOperationException(message);
+}
+
+bool IsAuthorized(string allowedRoles, string token)
+{
+    var httpContext = new DefaultHttpContext();
+    httpContext.Request.Headers["Token"] = token;
+    var context = new AuthorizationFilterContext(
+        new ActionContext(httpContext, new RouteData(), new ActionDescriptor()),
+        new List<IFilterMetadata>());
+    new CustomAuthorizeAttribute(allowedRoles).OnAuthorization(context);
+    if (context.Result is null) return true;
+    if (context.Result is StatusCodeResult { StatusCode: StatusCodes.Status403Forbidden }) return false;
+    throw new InvalidOperationException("Unexpected authorization response.");
 }
 
 try
@@ -66,6 +85,39 @@ try
     Environment.SetEnvironmentVariable("JWT_SIGNING_KEY", null);
     Reject(() => CurrentUserService.ValidateJwtToken(token),
         "Missing signing configuration must fail closed.");
+    Environment.SetEnvironmentVariable("JWT_SIGNING_KEY", signingKey);
+
+    var roleCases = new (string Allowed, string Granted, bool Expected)[]
+    {
+        ("Admin", "Admin", true),
+        ("Admin", "User", false),
+        ("Admin", "SuperAdmin", false),
+        ("Admin", "Adm", false),
+        ("READ_USERS", "READ_USER", false),
+        ("Admin", "", false),
+        ("Admin", " , , ", false),
+        ("Admin,READ_USERS", "User,READ_USERS", true),
+        (" Admin ,READ_USERS", " User , Admin ", true),
+        ("Admin", "admin", false),
+        ("", "Admin", false),
+        (" , ", "User", false),
+        ("Admin,User", "Admin,User", true),
+    };
+    foreach (var roleCase in roleCases)
+    {
+        var signedRoleToken = new JwtService(null!).GenerateJwtToken(roleCase.Granted);
+        Check(IsAuthorized(roleCase.Allowed, signedRoleToken) == roleCase.Expected,
+            $"Role matching failed for allowed '{roleCase.Allowed}' and granted '{roleCase.Granted}'.");
+    }
+    Check(!IsAuthorized("Admin", ""), "A missing token must be forbidden.");
+    Check(!IsAuthorized("Admin", "invalid.token.value"), "A malformed token must be forbidden.");
+    var missingRoles = new JwtSecurityToken(
+        expires: DateTime.UtcNow.AddMinutes(5),
+        signingCredentials: new SigningCredentials(
+            new SymmetricSecurityKey(Encoding.ASCII.GetBytes(signingKey)),
+            SecurityAlgorithms.HmacSha256));
+    Check(!IsAuthorized("Admin", new JwtSecurityTokenHandler().WriteToken(missingRoles)),
+        "A signed token with no role claim must be forbidden.");
 
     // Controllers use client-supplied property names for dynamic table sorting.
     // Preserve property sorting while enforcing the patched parser's restrictions.

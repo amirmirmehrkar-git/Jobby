@@ -41,5 +41,5 @@ jobs:
         run: dotnet restore WebUI/WebUI.csproj
       - name: Build without running application or accessing production data
         run: dotnet build WebUI/WebUI.csproj --configuration Release --no-restore
-      - name: Test JWT validation and safe dynamic sorting without a database
+      - name: Test JWT, exact role authorization and safe sorting without a database
         run: dotnet run --project tests/DependencySmoke/DependencySmoke.csproj --configuration Release
