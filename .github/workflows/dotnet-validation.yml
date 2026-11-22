@@ -5,9 +5,11 @@ on:
     branches:
       - fix/audit-2026-11-22
       - master
+      - main
   pull_request:
     branches:
       - master
+      - main
 
 permissions:
   contents: read
