@@ -1,32 +1,35 @@
-﻿using JWT;
-using JWT.Algorithms;
-using JWT.Exceptions;
-using JWT.Serializers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
 using WebUI.Services;
-using static Infrastructure.Services.JwtService;
 
 namespace WebAPI.CustomFilters
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
-        string _RoleName;
+        private readonly HashSet<string> _allowedRoles;
 
         public CustomAuthorizeAttribute(string RoleName)
         {
-            _RoleName = RoleName;
+            _allowedRoles = new HashSet<string>(
+                (RoleName ?? string.Empty).Split(',',
+                    StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
+                StringComparer.Ordinal);
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             try
             {
-                var validatedToken = CurrentUserService.ValidateJwtToken(context.HttpContext.Request.Headers["Token"].ToString());
+                var validatedRoles = CurrentUserService.ValidateJwtToken(
+                    context.HttpContext.Request.Headers["Token"].ToString());
+                var userRoles = (validatedRoles ?? string.Empty).Split(',',
+                    StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-                if (!validatedToken.Contains(_RoleName) && !_RoleName.Contains(validatedToken))
+                // Require a complete role name. Empty claims and partial matches
+                // must never grant access to a protected endpoint.
+                if (!_allowedRoles.Overlaps(userRoles))
                 {
                     context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
