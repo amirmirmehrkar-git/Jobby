@@ -1,5 +1,5 @@
 using Application.Common.Interfaces;
-using Application.ViewModels.Payment;
+using Application.ViewModels;
 using MediatR;
 
 namespace Infrastructure.Services

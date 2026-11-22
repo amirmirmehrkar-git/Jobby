@@ -22,6 +22,8 @@ ASP.NET Core and Entity Framework packages are aligned at `7.0.20`; the local `d
 
 Protected endpoints compare complete comma-separated role names with case-sensitive matching. An authenticated user needs at least one role listed by the endpoint. Empty role claims, partial names, missing tokens and empty role requirements are forbidden; whitespace around role names is ignored. None of the existing protected endpoints uses an empty role requirement. Regression checks cover both permitted multi-role access and invalid signed role claims.
 
+Generated `bin/` and `obj/` outputs are excluded from version control; restore and build recreate them from source. Existing Git history is unchanged.
+
 The obsolete, unused `ICSharpCode.SharpZipLib.dll` reference has been removed. The Dynamic LINQ dependency uses the patched parser's default restrictions; do not enable arbitrary method calls in order to accept untrusted sort input.
 
 The unused RestSharp dependency and historical payment-provider configuration have also been removed. Payment integration remains unimplemented: generating a checkout URL reports missing configuration, and verification rejects every unverified transaction. The smoke checks cover this behavior. Azure Identity, MSAL and Duende IdentityServer use compatible security patches. Remaining AutoMapper and shared-runtime security findings require the supported-framework migration described in `SECURITY.md`.
