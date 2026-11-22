@@ -149,7 +149,7 @@ public class CertificateController : ApiControllerBase
     }
 
     [HttpPost("process")]
-    [RequestSizeLimit(50_000_000)] // مثال: 50MB - تنظیم کن به نیازت
+    [RequestSizeLimit(21 * 1024 * 1024)] // Match the application-wide 21 MiB request ceiling.
     public async Task<IActionResult> Process([FromForm] IFormFile audio)
     {
         if (audio == null || audio.Length == 0)
