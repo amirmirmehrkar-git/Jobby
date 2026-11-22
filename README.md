@@ -7,11 +7,24 @@ Legacy ASP.NET Core / Entity Framework application. The web entry point is `WebU
 ## Build (no production data)
 
 ```sh
+python3 scripts/validate-dependency-versions.py
+dotnet tool restore --tool-manifest WebUI/.config/dotnet-tools.json
 dotnet restore WebUI/WebUI.csproj
 dotnet build WebUI/WebUI.csproj --configuration Release --no-restore
+dotnet run --project tests/DependencySmoke/DependencySmoke.csproj --configuration Release
 ```
 
 The repository's `global.json` pins the SDK used for legacy validation. A framework and NuGet migration to a supported .NET release is still required, followed by integration and regression testing.
+
+## Dependency maintenance
+
+ASP.NET Core and Entity Framework packages are aligned at `7.0.20`; the local `dotnet-ef` tool uses the same release. Shared package references must move together across the four projects. CI rejects mismatched versions, restores local tools, checks `dotnet ef --version`, and builds the web project. The smoke checks exercise the application's JWT decoder with valid, altered, expired and differently signed tokens, and verify that dynamic table sorting accepts property names and rejects method expressions. They do not start the application or connect to a database.
+
+The obsolete, unused `ICSharpCode.SharpZipLib.dll` reference has been removed. The Dynamic LINQ dependency uses the patched parser's default restrictions; do not enable arbitrary method calls in order to accept untrusted sort input.
+
+Dependabot checks all four manifest directories in one configuration and groups copies of the same package into a single version-update PR. Routine updates are limited to minor and patch versions using `allow.update-types`; security updates remain eligible, including fixes that require a major upgrade. Security PRs are grouped separately. No update is automatically merged. AutoMapper/IdentityServer and .NET major upgrades need a coordinated migration with integration tests.
+
+References: [Dependabot configuration](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference), [EF tool/runtime compatibility](https://learn.microsoft.com/en-us/ef/core/get-started/overview/install), [Dynamic LINQ security defaults](https://github.com/zzzprojects/System.Linq.Dynamic.Core#breaking-changes).
 
 ## Required runtime configuration
 
