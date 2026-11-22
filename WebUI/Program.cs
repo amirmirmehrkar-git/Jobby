@@ -14,6 +14,8 @@ using WebUI;
 
 //builder
 var builder = WebApplication.CreateBuilder(args);
+// Fail at startup rather than issuing tokens with a missing or committed key.
+_ = Infrastructure.Services.JwtService.secret;
 builder.Services.AddControllersWithViews();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -21,7 +23,7 @@ builder.Services.AddWebUIServices();
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 5;
+    options.Password.RequiredLength = 12;
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
@@ -44,13 +46,13 @@ builder.Services.AddIdentityCore<ApplicationUser>(opt =>
 #region مربوط به حجم فایل های آپلودی
 builder.Services.Configure<FormOptions>(o =>
 {
-    o.ValueLengthLimit = int.MaxValue;
-    o.MultipartBodyLengthLimit = int.MaxValue;
-    o.MemoryBufferThreshold = int.MaxValue;
+    o.ValueLengthLimit = 1024 * 1024;
+    o.MultipartBodyLengthLimit = 20 * 1024 * 1024;
+    o.MemoryBufferThreshold = 64 * 1024;
 });
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.Limits.MaxRequestBodySize = int.MaxValue;
+    serverOptions.Limits.MaxRequestBodySize = 21 * 1024 * 1024;
 });
 #endregion
 
@@ -123,8 +125,19 @@ builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 //app
 var app = builder.Build();
-app.UseDeveloperExceptionPage();
-app.UseMigrationsEndPoint();
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseMigrationsEndPoint();
+}
+else
+{
+    app.UseExceptionHandler(error => error.Run(async context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        await context.Response.WriteAsync("An unexpected error occurred.");
+    }));
+}
 using (var scope = app.Services.CreateScope())
 {
     var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
@@ -147,12 +160,7 @@ app.UseHealthChecks("/health");
 app.UseAuthorization();
 app.MapControllers();
 app.UseStaticFiles();
-app.UseCors(builder =>
-{
-    builder.AllowAnyOrigin()
-      .AllowAnyHeader()
-      .AllowAnyMethod();
-});
+
 
 app.UseRewriter();
 app.MapControllerRoute(
