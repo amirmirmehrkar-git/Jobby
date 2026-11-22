@@ -26,3 +26,9 @@ Unrestricted cross-origin access has been removed. Configure an explicit CORS al
 ## Validation status
 
 A GitHub Actions .NET 7 Release build and dependency restore passed on the pull-request branch. Database, JWT issuer/verifier, bootstrap administrator and file-upload integration tests have NOT been completed. Do not deploy until these checks pass and production secrets are configured.
+
+## Payment integration and remaining dependency risks
+
+The payment service is an unimplemented integration. URL generation now reports that configuration is missing, and verification always rejects an unverified transaction. Do not re-enable it until the provider response is authenticated and checked against the expected order, amount, currency and payment state. Historical gateway configuration and signing material have been removed from the current service; any previously committed payment credentials must be revoked at their issuer before reuse of this integration.
+
+Compatible Azure Identity, MSAL and Duende IdentityServer security patches are explicitly referenced while the legacy parent packages remain. These patches do not make .NET 7 supported. The transitive audit still requires a coordinated framework/IdentityServer/AutoMapper migration: AutoMapper 11 has no compatible patched version, and System.Text.Json / ASN.1 must be assessed together with the deployed shared runtime. Do not suppress these findings or downgrade packages to hide them. Database, external identity-provider and payment-provider integration tests remain required before release.

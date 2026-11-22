@@ -24,6 +24,8 @@ Protected endpoints compare complete comma-separated role names with case-sensit
 
 The obsolete, unused `ICSharpCode.SharpZipLib.dll` reference has been removed. The Dynamic LINQ dependency uses the patched parser's default restrictions; do not enable arbitrary method calls in order to accept untrusted sort input.
 
+The unused RestSharp dependency and historical payment-provider configuration have also been removed. Payment integration remains unimplemented: generating a checkout URL reports missing configuration, and verification rejects every unverified transaction. The smoke checks cover this behavior. Azure Identity, MSAL and Duende IdentityServer use compatible security patches. Remaining AutoMapper and shared-runtime security findings require the supported-framework migration described in `SECURITY.md`.
+
 Dependabot checks all four manifest directories in one configuration and groups copies of the same package into a single version-update PR. Routine updates are limited to minor and patch versions using `allow.update-types`; security updates remain eligible, including fixes that require a major upgrade. Security PRs are grouped separately. No update is automatically merged. AutoMapper/IdentityServer and .NET major upgrades need a coordinated migration with integration tests.
 
 References: [Dependabot configuration](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference), [EF tool/runtime compatibility](https://learn.microsoft.com/en-us/ef/core/get-started/overview/install), [Dynamic LINQ security defaults](https://github.com/zzzprojects/System.Linq.Dynamic.Core#breaking-changes).

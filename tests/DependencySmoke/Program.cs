@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Infrastructure.Services;
+using Application.ViewModels.Payment;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -135,6 +136,13 @@ try
     {
         checks++;
     }
+
+    var payment = new PaymentService(null!);
+    Check(!await payment.VerifyBuy("unverified-reference"),
+        "The unimplemented payment service must never confirm an unverified payment.");
+    Check(!await payment.VerifyBuy(""), "A missing payment reference must be rejected.");
+    Reject(() => payment.GenerateBuyUrl(new BuyPlanViewMode()).GetAwaiter().GetResult(),
+        "An unconfigured payment service must not generate a checkout URL.");
 
     Console.WriteLine($"Dependency smoke checks passed: {checks}.");
 }

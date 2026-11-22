@@ -16,7 +16,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="RestSharp" Version="111.4.0" />
+  </ItemGroup>
+
+  <!-- Minimum patched versions for dependencies pulled in by the legacy stack. -->
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.11.4" />
+    <PackageReference Include="Duende.IdentityServer" Version="6.0.5" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
   </ItemGroup>
 
   <ItemGroup>
