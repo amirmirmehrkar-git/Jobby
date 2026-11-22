@@ -80,8 +80,28 @@ namespace Infrastructure.Persistence
             };
             if (_userManager.Users.All(u => u.UserName != administrator.UserName))
             {
-                var a = await _userManager.CreateAsync(administrator, "admin");
-                await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
+                // Never provision a known default password. Configure this secret in the
+                // process environment before bootstrapping a fresh database.
+                var bootstrapPassword = Environment.GetEnvironmentVariable("BOOTSTRAP_ADMIN_PASSWORD");
+                if (string.IsNullOrWhiteSpace(bootstrapPassword) || bootstrapPassword.Length < 12)
+                {
+                    throw new InvalidOperationException(
+                        "BOOTSTRAP_ADMIN_PASSWORD must be configured with at least 12 characters before first-time administrator seeding.");
+                }
+
+                var created = await _userManager.CreateAsync(administrator, bootstrapPassword);
+                if (!created.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        "Administrator seeding failed: " + string.Join(", ", created.Errors.Select(error => error.Code)));
+                }
+
+                var assigned = await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
+                if (!assigned.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        "Administrator role assignment failed: " + string.Join(", ", assigned.Errors.Select(error => error.Code)));
+                }
             }
 
             await _context.SaveChangesAsync();
